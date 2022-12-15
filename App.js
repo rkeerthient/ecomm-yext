@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { config } from "./src/config/searchConfig";
+import {
+  provideHeadless,
+  SearchHeadlessProvider,
+} from "@yext/search-headless-react";
+import Navigation from "./src/config/Navigation";
+import { ProductsProvider } from "./src/context/ProductsContext";
 
 export default function App() {
+  const searcher = provideHeadless(config);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SearchHeadlessProvider searcher={searcher}>
+      <ProductsProvider>
+        <Navigation />
+      </ProductsProvider>
+    </SearchHeadlessProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
