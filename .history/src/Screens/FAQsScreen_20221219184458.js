@@ -35,9 +35,11 @@ const FAQsScreen = () => {
                   <List.Item
                     titleNumberOfLines={25}
                     title={
-                      <Text style={{ color: "black" }}>
-                        {item.rawData.answer}
-                      </Text>
+                      <Markdown>
+                        <Text style={{ color: "black" }}>
+                          {item.rawData.answer}
+                        </Text>
+                      </Markdown>
                     }
                   ></List.Item>
                 </List.Accordion>

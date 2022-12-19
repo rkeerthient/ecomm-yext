@@ -32,11 +32,19 @@ const FAQsScreen = () => {
                   expanded={expanded}
                   onPress={handlePress}
                 >
+                  {/* <List.Item
+                    title={`${(
+                      <MarkdownView
+                        markdown={item.rawData.answer}
+                      ></MarkdownView>
+                    )}`}
+                  ></List.Item> */}
                   <List.Item
                     titleNumberOfLines={25}
                     title={
                       <Text style={{ color: "black" }}>
-                        {item.rawData.answer}
+                        {" "}
+                        <Markdown>{item.rawData.answer}</Markdown>
                       </Text>
                     }
                   ></List.Item>

@@ -9,6 +9,8 @@ const FAQsScreen = () => {
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   const [expanded, setExpanded] = useState(false);
+  const [expId, setExpId] = useState(null);
+
   useEffect(() => {
     searchActions.setVertical("faqs");
     searchActions.executeVerticalQuery().then((res) => {
@@ -29,15 +31,17 @@ const FAQsScreen = () => {
                 <List.Accordion
                   key={index}
                   title={item.rawData.question}
-                  expanded={expanded}
-                  onPress={handlePress}
+                  expanded={(expId = index)}
+                  onPress={() => handlePress}
                 >
                   <List.Item
                     titleNumberOfLines={25}
                     title={
+                      // <Markdown>
                       <Text style={{ color: "black" }}>
                         {item.rawData.answer}
                       </Text>
+                      // </Markdown>
                     }
                   ></List.Item>
                 </List.Accordion>

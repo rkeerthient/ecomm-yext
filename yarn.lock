@@ -3400,6 +3400,11 @@
   "resolved" "https://registry.npmjs.org/entities/-/entities-4.4.0.tgz"
   "version" "4.4.0"
 
+"entities@~2.0.0":
+  "integrity" "sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ=="
+  "resolved" "https://registry.npmjs.org/entities/-/entities-2.0.3.tgz"
+  "version" "2.0.3"
+
 "env-editor@^0.4.1":
   "integrity" "sha512-ObFo8v4rQJAE59M69QzwloxPZtd33TpYEIjtKD1rrFDcM1Gd7IkDxEBU+HriziN6HSHQnBJi8Dmy+JWkav5HKA=="
   "resolved" "https://registry.npmjs.org/env-editor/-/env-editor-0.4.2.tgz"
@@ -4785,6 +4790,13 @@
   "resolved" "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   "version" "1.2.4"
 
+"linkify-it@^2.0.0":
+  "integrity" "sha512-GnAl/knGn+i1U/wjBz3akz2stz+HrHLsxMwHQGofCDfPvlf+gDKN58UtfmUquTY4/MXeE2x7k19KQmeoZi94Iw=="
+  "resolved" "https://registry.npmjs.org/linkify-it/-/linkify-it-2.2.0.tgz"
+  "version" "2.2.0"
+  dependencies:
+    "uc.micro" "^1.0.1"
+
 "load-json-file@^2.0.0":
   "integrity" "sha512-3p6ZOGNbiX4CdvEd1VcE6yi78UrGNpjHO33noGwHCnT/o2fyllJDepsm8+mFFv/DvtwFHht5HIHSyOy5a+ChVQ=="
   "resolved" "https://registry.npmjs.org/load-json-file/-/load-json-file-2.0.0.tgz"
@@ -4923,6 +4935,17 @@
   dependencies:
     "object-visit" "^1.0.0"
 
+"markdown-it@^10.0.0":
+  "integrity" "sha512-YWOP1j7UbDNz+TumYP1kpwnP0aEa711cJjrAQrzd0UXlbJfc5aAq0F/PZHjiioqDC1NKgvIMX+o+9Bk7yuM2dg=="
+  "resolved" "https://registry.npmjs.org/markdown-it/-/markdown-it-10.0.0.tgz"
+  "version" "10.0.0"
+  dependencies:
+    "argparse" "^1.0.7"
+    "entities" "~2.0.0"
+    "linkify-it" "^2.0.0"
+    "mdurl" "^1.0.1"
+    "uc.micro" "^1.0.5"
+
 "md5-file@^3.2.3":
   "integrity" "sha512-3Tkp1piAHaworfcCgH0jKbTvj1jWWFgbvh2cXaNCgHwyTCBxxvD1Y04rmfpvdPm1P4oXMOpm6+2H7sr7v9v8Fw=="
   "resolved" "https://registry.npmjs.org/md5-file/-/md5-file-3.2.3.tgz"
@@ -4957,6 +4980,11 @@
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="
   "resolved" "https://registry.npmjs.org/mdn-data/-/mdn-data-2.0.14.tgz"
   "version" "2.0.14"
+
+"mdurl@^1.0.1":
+  "integrity" "sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g=="
+  "resolved" "https://registry.npmjs.org/mdurl/-/mdurl-1.0.1.tgz"
+  "version" "1.0.1"
 
 "media-typer@0.3.0":
   "integrity" "sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ=="
@@ -6148,6 +6176,13 @@
     "jscodeshift" "^0.13.1"
     "nullthrows" "^1.1.1"
 
+"react-native-fit-image@^1.5.5":
+  "integrity" "sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg=="
+  "resolved" "https://registry.npmjs.org/react-native-fit-image/-/react-native-fit-image-1.5.5.tgz"
+  "version" "1.5.5"
+  dependencies:
+    "prop-types" "^15.5.10"
+
 "react-native-gradle-plugin@^0.70.3":
   "integrity" "sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A=="
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
@@ -6159,6 +6194,16 @@
   "version" "1.3.2"
   dependencies:
     "@types/geojson" "^7946.0.8"
+
+"react-native-markdown-display@^7.0.0-alpha.2":
+  "integrity" "sha512-Od1a4wJEcVGwO1bh02sHivsEkKKpu99+ew/OtmVTPRmfT8V3B0aTut7k7ICV0Vej9F4ZjylRHvm28/maYUBeGw=="
+  "resolved" "https://registry.npmjs.org/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.2.tgz"
+  "version" "7.0.0-alpha.2"
+  dependencies:
+    "css-to-react-native" "^3.0.0"
+    "markdown-it" "^10.0.0"
+    "prop-types" "^15.7.2"
+    "react-native-fit-image" "^1.5.5"
 
 "react-native-paper@^5.1.0":
   "integrity" "sha512-cNW/k1i/bd08eSmCpWyMt5aZMrAAl/c56bG2VnPrJtVyQtBgdCvMXnpXhDOWEBJPR6ZEiAJl6VWutYvi9XcDcg=="
@@ -7415,6 +7460,11 @@
   "integrity" "sha512-f9BESNVhzlhEFf2CHMSj40NWOjYPl1YKYbrvIr/hFTDEmLq7SRbWvm7FcdcpCYT95zrOhC7gZSxjdnnTpBcwVw=="
   "resolved" "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.32.tgz"
   "version" "0.7.32"
+
+"uc.micro@^1.0.1", "uc.micro@^1.0.5":
+  "integrity" "sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA=="
+  "resolved" "https://registry.npmjs.org/uc.micro/-/uc.micro-1.0.6.tgz"
+  "version" "1.0.6"
 
 "uglify-es@^3.1.9":
   "integrity" "sha512-r+MU0rfv4L/0eeW3xZrd16t4NZfK8Ld4SWVglYBb7ez5uXFWHuVRs6xCTrf1yirs9a4j4Y27nn7SRfO6v67XsQ=="

@@ -30,14 +30,16 @@ const FAQsScreen = () => {
                   key={index}
                   title={item.rawData.question}
                   expanded={expanded}
-                  onPress={handlePress}
+                  onPress={() => handlePress}
                 >
                   <List.Item
                     titleNumberOfLines={25}
                     title={
+                      // <Markdown>
                       <Text style={{ color: "black" }}>
                         {item.rawData.answer}
                       </Text>
+                      // </Markdown>
                     }
                   ></List.Item>
                 </List.Accordion>
