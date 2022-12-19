@@ -1,6 +1,8 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,

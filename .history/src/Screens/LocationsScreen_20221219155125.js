@@ -1,6 +1,8 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -34,7 +36,13 @@ const LocationsScreen = () => {
         setInitItem(res.verticalResults.results[0]);
     });
   }, []);
-
+  useEffect(() => {
+    console.log(JSON.stringify(initItem));
+  }, [initItem]);
+  const changeRegion = (category) => {
+    console.log(JSON.stringify(category));
+    setInitItem(category);
+  };
   return (
     <>
       {!loading && results.length >= 1 && initItem && (
@@ -50,22 +58,17 @@ const LocationsScreen = () => {
                 longitudeDelta: 0.0421,
               }}
             >
-              {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
-              })}
+              <Marker
+                coordinate={{
+                  latitude: initItem.rawData.geocodedCoordinate.latitude,
+                  longitude: initItem.rawData.geocodedCoordinate.longitude,
+                }}
+                pinColor="#ab7a5f"
+              >
+                <Callout>
+                  <Text>{initItem.rawData.name}</Text>
+                </Callout>
+              </Marker>
             </MapView>
           </View>
           <ScrollView

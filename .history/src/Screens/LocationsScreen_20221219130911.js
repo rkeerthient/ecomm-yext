@@ -1,6 +1,7 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -14,26 +15,39 @@ const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
-const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
 const LocationsScreen = () => {
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   const [loading, setLoading] = useState(true);
-  const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
+  const [region, setRegion] = useState({
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  });
+
   useEffect(() => {
     searchActions.setVertical("locations");
     searchActions.executeVerticalQuery().then((res) => {
       setResults(res.verticalResults.results),
         setLoading(false),
         setInitItem(res.verticalResults.results[0]);
+      setRegion({
+        ...region,
+        latitude: res.verticalResults.results[0].rawData.geocodedCoordinate.latitude,
+        longitude: res.verticalResults.results[0]rawData.geocodedCoordinate.longitude,
+      });
     });
   }, []);
+
+  useEffect(() => {
+    console.log(JSON.stringify(initItem));
+  }, [initItem]);
+
+  const newRegion = (region) => {
+    console.log(JSON.stringify(region));
+  };
 
   return (
     <>
@@ -41,7 +55,6 @@ const LocationsScreen = () => {
         <>
           <View style={styles.container}>
             <MapView
-              ref={mapViewRef}
               style={styles.map}
               initialRegion={{
                 latitude: initItem.rawData.geocodedCoordinate.latitude,
@@ -50,22 +63,17 @@ const LocationsScreen = () => {
                 longitudeDelta: 0.0421,
               }}
             >
-              {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
-              })}
+              <Marker
+                coordinate={{
+                  latitude: initItem.rawData.geocodedCoordinate.latitude,
+                  longitude: initItem.rawData.geocodedCoordinate.longitude,
+                }}
+                pinColor="#ab7a5f"
+              >
+                <Callout>
+                  <Text>{initItem.rawData.name}</Text>
+                </Callout>
+              </Marker>
             </MapView>
           </View>
           <ScrollView
@@ -88,15 +96,7 @@ const LocationsScreen = () => {
               <TouchableOpacity
                 key={index}
                 style={styles.chipsItem}
-                onPress={() =>
-                  mapViewRef.current.animateToRegion(
-                    {
-                      latitude: category.rawData.geocodedCoordinate.latitude,
-                      longitude: category.rawData.geocodedCoordinate.longitude,
-                    },
-                    1000
-                  )
-                }
+                onPress={() => newRegion(category)}
               >
                 <Text>{category.name}</Text>
               </TouchableOpacity>

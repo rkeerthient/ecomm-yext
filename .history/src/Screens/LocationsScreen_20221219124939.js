@@ -1,6 +1,7 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -19,13 +20,18 @@ const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
 const LocationsScreen = () => {
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   const [loading, setLoading] = useState(true);
-  const mapViewRef = useRef(null);
-  const [initItem, setInitItem] = useState();
+  const [initItem, setInitItem] = useState({
+    region: {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+  });
   useEffect(() => {
     searchActions.setVertical("locations");
     searchActions.executeVerticalQuery().then((res) => {
@@ -35,76 +41,70 @@ const LocationsScreen = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const nItem = { ...initItem };
+    nItem.region.latitude = initItem.latitude;
+    nItem.region.longitude = initItem.longitude;
+    console.log(JSON.stringify(initItem));
+  }, [initItem]);
+
   return (
-    <>
-      {!loading && results.length >= 1 && initItem && (
-        <>
-          <View style={styles.container}>
-            <MapView
-              ref={mapViewRef}
-              style={styles.map}
-              initialRegion={{
-                latitude: initItem.rawData.geocodedCoordinate.latitude,
-                longitude: initItem.rawData.geocodedCoordinate.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            >
-              {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
-              })}
-            </MapView>
-          </View>
-          <ScrollView
-            horizontal
-            scrollEventThrottle={1}
-            showsHorizontalScrollIndicator={false}
-            height={50}
-            style={styles.chipsScrollView}
-            contentInset={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 20,
-            }}
-            contentContainerStyle={{
-              paddingRight: Platform.OS === "android" ? 20 : 0,
-            }}
-          >
-            {results.map((category, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.chipsItem}
-                onPress={() =>
-                  mapViewRef.current.animateToRegion(
-                    {
-                      latitude: category.rawData.geocodedCoordinate.latitude,
-                      longitude: category.rawData.geocodedCoordinate.longitude,
-                    },
-                    1000
-                  )
-                }
-              >
-                <Text>{category.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </>
-      )}
-    </>
+    <Text>Hi</Text>
+    // <>
+    //   {!loading && results.length >= 1 && initItem && (
+    //     <>
+    //       <View style={styles.container}>
+    //         <MapView
+    //           style={styles.map}
+    //           initialRegion={{
+    //             latitude: initItem.rawData.geocodedCoordinate.latitude,
+    //             longitude: initItem.rawData.geocodedCoordinate.longitude,
+    //             latitudeDelta: 0.0922,
+    //             longitudeDelta: 0.0421,
+    //           }}
+    //         >
+    //           <Marker
+    //             coordinate={{
+    //               latitude: initItem.rawData.geocodedCoordinate.latitude,
+    //               longitude: initItem.rawData.geocodedCoordinate.longitude,
+    //             }}
+    //             pinColor="#ab7a5f"
+    //           >
+    //             <Callout>
+    //               <Text>{initItem.rawData.name}</Text>
+    //             </Callout>
+    //           </Marker>
+    //         </MapView>
+    //       </View>
+    //       <ScrollView
+    //         horizontal
+    //         scrollEventThrottle={1}
+    //         showsHorizontalScrollIndicator={false}
+    //         height={50}
+    //         style={styles.chipsScrollView}
+    //         contentInset={{
+    //           top: 0,
+    //           left: 0,
+    //           bottom: 0,
+    //           right: 20,
+    //         }}
+    //         contentContainerStyle={{
+    //           paddingRight: Platform.OS === "android" ? 20 : 0,
+    //         }}
+    //       >
+    //         {results.map((category, index) => (
+    //           <TouchableOpacity
+    //             key={index}
+    //             style={styles.chipsItem}
+    //             onPress={() => setInitItem(category)}
+    //           >
+    //             <Text>{category.name}</Text>
+    //           </TouchableOpacity>
+    //         ))}
+    //       </ScrollView>
+    //     </>
+    //   )}
+    // </>
   );
 };
 

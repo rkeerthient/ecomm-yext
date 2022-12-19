@@ -1,6 +1,8 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -51,20 +53,18 @@ const LocationsScreen = () => {
               }}
             >
               {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: data.rawData.geocodedCoordinate.latitude,
+                    longitude: data.rawData.geocodedCoordinate.longitude,
+                  }}
+                  pinColor="#ab7a5f"
+                >
+                  <Callout>
+                    <Text>{data.rawData.name}</Text>
+                  </Callout>
+                </Marker>;
               })}
             </MapView>
           </View>

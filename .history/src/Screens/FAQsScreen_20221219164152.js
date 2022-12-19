@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { useSearchActions } from "@yext/search-headless-react";
 import { List } from "react-native-paper";
-import Markdown from "react-native-showdown";
+import MarkdownView from "react-showdown";
 
 const FAQsScreen = () => {
   const [results, setResults] = useState([]);
@@ -32,17 +32,9 @@ const FAQsScreen = () => {
                   expanded={expanded}
                   onPress={handlePress}
                 >
-                  {/* <List.Item
-                    title={`${(
-                      <MarkdownView
-                        markdown={item.rawData.answer}
-                      ></MarkdownView>
-                    )}`}
-                  ></List.Item> */}
-                  <List.Item
-                    titleNumberOfLines={25}
-                    title={<Markdown markdown={item.rawData.answer}></Markdown>}
-                  ></List.Item>
+                  <List.Item title="">
+                    <MarkdownView markdown={item.rawData.answer}></MarkdownView>
+                  </List.Item>
                 </List.Accordion>
               );
             })}

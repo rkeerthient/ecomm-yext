@@ -1,6 +1,7 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -14,17 +15,10 @@ const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
-const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
 const LocationsScreen = () => {
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   const [loading, setLoading] = useState(true);
-  const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
   useEffect(() => {
     searchActions.setVertical("locations");
@@ -34,14 +28,31 @@ const LocationsScreen = () => {
         setInitItem(res.verticalResults.results[0]);
     });
   }, []);
+  useEffect(() => {
+    console.log(JSON.stringify(initItem));
+  }, [initItem]);
+  flyToNyc () {
+    this._map.flyTo(nyc, zoomDuration);
+  }
+
+  flyToBoston () {
+    this._map.flyTo(boston, zoomDuration);
+  }
+
+  flyToParis () {
+    this._map.flyTo(paris, zoomDuration);
+  }
+
+  flyToRome () {
+    this._map.flyTo(rome, zoomDuration);
+  }
 
   return (
     <>
       {!loading && results.length >= 1 && initItem && (
         <>
           <View style={styles.container}>
-            <MapView
-              ref={mapViewRef}
+            {/* <MapView
               style={styles.map}
               initialRegion={{
                 latitude: initItem.rawData.geocodedCoordinate.latitude,
@@ -50,25 +61,54 @@ const LocationsScreen = () => {
                 longitudeDelta: 0.0421,
               }}
             >
-              {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
-              })}
-            </MapView>
+              <Marker
+                coordinate={{
+                  latitude: initItem.rawData.geocodedCoordinate.latitude,
+                  longitude: initItem.rawData.geocodedCoordinate.longitude,
+                }}
+                pinColor="#ab7a5f"
+              >
+                <Callout>
+                  <Text>{initItem.rawData.name}</Text>
+                </Callout>
+              </Marker>
+            </MapView> */}
+            <MapboxGL.MapView
+              ref={(c) => (this._map = c)}
+              style={{ flex: 1 }}
+              zoomLevel={15}
+              centerCoordinate={nyc}
+            ></MapboxGL.MapView>
           </View>
-          <ScrollView
+          <View style={styles.container}>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.flyToNyc.bind(this)}
+              >
+                <Text style={styles.buttonText}>NYC</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.flyToBoston.bind(this)}
+              >
+                <Text style={styles.buttonText}>Boston</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.flyToParis.bind(this)}
+              >
+                <Text style={styles.buttonText}>Paris</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.flyToRome.bind(this)}
+              >
+                <Text style={styles.buttonText}>Rome</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* <ScrollView
             horizontal
             scrollEventThrottle={1}
             showsHorizontalScrollIndicator={false}
@@ -88,20 +128,12 @@ const LocationsScreen = () => {
               <TouchableOpacity
                 key={index}
                 style={styles.chipsItem}
-                onPress={() =>
-                  mapViewRef.current.animateToRegion(
-                    {
-                      latitude: category.rawData.geocodedCoordinate.latitude,
-                      longitude: category.rawData.geocodedCoordinate.longitude,
-                    },
-                    1000
-                  )
-                }
+                onPress={() => setInitItem(category)}
               >
                 <Text>{category.name}</Text>
               </TouchableOpacity>
             ))}
-          </ScrollView>
+          </ScrollView> */}
         </>
       )}
     </>
