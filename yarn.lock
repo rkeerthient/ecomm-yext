@@ -1416,6 +1416,14 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@horizonlime/react-native-select-multiple@^1.1.2":
+  "integrity" "sha512-GpZ6otmnrdjBsSt1ZiFQaVRF00zN602lstVySuDcAhMj9+r/hNa4spDVIOywrl6ymPm6zwCQa6f7Y3zQolmOow=="
+  "resolved" "https://registry.npmjs.org/@horizonlime/react-native-select-multiple/-/react-native-select-multiple-1.1.2.tgz"
+  "version" "1.1.2"
+  dependencies:
+    "lodash.isequal" "^4.5.0"
+    "prop-types" "^15.7.2"
+
 "@jest/create-cache-key-function@^29.0.3":
   "integrity" "sha512-4i+E+E40gK13K78ffD/8cy4lSSqeWwyXeTZoq16tndiCP12hC8uQsPJdIu5C6Kf22fD8UbBk71so7s/6VwpUOQ=="
   "resolved" "https://registry.npmjs.org/@jest/create-cache-key-function/-/create-cache-key-function-29.3.1.tgz"

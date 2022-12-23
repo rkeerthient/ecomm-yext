@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
+    "@horizonlime/react-native-select-multiple": "^1.1.2",
     "@react-navigation/bottom-tabs": "^6.5.0",
     "@react-navigation/native": "^6.1.0",
     "@types/react-dom": "^18.0.9",
