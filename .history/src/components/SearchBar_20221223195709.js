@@ -30,6 +30,7 @@ export const SearchBar = ({ verticalKey }) => {
         style={styles.textInp}
         value={queryTerm}
         onChangeText={(text) => setQueryTerm(text)}
+        onPress={handleSearch}
       />
       {showFacetDrawer && (
         <View style={styles.filtersContainer}>

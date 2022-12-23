@@ -183,6 +183,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
     </View>
   );
 };
+// const width = Dimensions.get("window").width - 40;
 
 const styles = StyleSheet.create({
   filterContainer: {
@@ -213,6 +214,6 @@ const styles = StyleSheet.create({
   rowStyle: {
     paddingVertical: 7.5,
     backgroundColor: Colors.offWhite,
-    height: 30,
+    height: 40,
   },
 });

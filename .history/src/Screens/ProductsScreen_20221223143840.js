@@ -9,6 +9,7 @@ import {
 import { SearchBar } from "../components/SearchBar";
 import { useProductsContext } from "../context/ProductsContext";
 import ProductResultCard from "../components/ProductResultCard";
+import { useSearchState } from "@yext/search-headless-react";
 
 const ProductsScreen = ({ navigation }) => {
   const { productResults } = useProductsContext();
@@ -22,7 +23,7 @@ const ProductsScreen = ({ navigation }) => {
       <SearchBar verticalKey="products" />
       {productResults && (
         <View style={styles.resultsSection}>
-          {/* <FlatList
+          <FlatList
             numColumns={2}
             data={productResults}
             columnWrapperStyle={{ justifyContent: "space-evenly" }}
@@ -34,7 +35,7 @@ const ProductsScreen = ({ navigation }) => {
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id}
-          /> */}
+          />
         </View>
       )}
     </View>
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: "#fff",
     flexDirection: "row",
-    flexBasis: 100,
   },
   resultsSection: {
     zIndex: -1,

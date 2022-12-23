@@ -183,15 +183,17 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
     </View>
   );
 };
+// const width = Dimensions.get("window").width - 40;
 
 const styles = StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.offWhite,
     width: width - 40,
     alignItems: "center",
-    flexBasis: 150,
+    height: 30,
   },
   textContainer: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     padding: 6,
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     position: "absolute",
-    marginTop: 31,
+    // marginTop: 31,
     width: width - 40,
   },
   checkboxText: {
@@ -213,6 +215,6 @@ const styles = StyleSheet.create({
   rowStyle: {
     paddingVertical: 7.5,
     backgroundColor: Colors.offWhite,
-    height: 30,
+    height: 40,
   },
 });

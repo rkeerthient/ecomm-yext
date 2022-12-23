@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: "#fff",
     flexDirection: "row",
-    flexBasis: 100,
   },
   resultsSection: {
     zIndex: -1,
+    marginTop: 50,
   },
 });

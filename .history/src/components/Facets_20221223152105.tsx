@@ -67,7 +67,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
   useEffect(() => {
     if (open) {
       Animated.timing(expandAnimation, {
-        toValue: 320,
+        toValue: 520,
         duration: 300,
         useNativeDriver: false,
       }).start();
@@ -183,13 +183,14 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
     </View>
   );
 };
+// const width = Dimensions.get("window").width - 40;
 
 const styles = StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.offWhite,
     width: width - 40,
     alignItems: "center",
-    flexBasis: 150,
+    flexBasis: 100,
   },
   textContainer: {
     flexDirection: "row",
@@ -213,6 +214,6 @@ const styles = StyleSheet.create({
   rowStyle: {
     paddingVertical: 7.5,
     backgroundColor: Colors.offWhite,
-    height: 30,
+    height: 40,
   },
 });

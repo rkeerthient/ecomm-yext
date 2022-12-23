@@ -84,15 +84,13 @@ const styles = StyleSheet.create({
   filtersContainer: {
     flexDirection: "column",
     marginHorizontal: 18,
-    minHeight: 5,
+    height: 200,
     justifyContent: "center",
     zIndex: 1,
-    marginTop: 100,
-    height: "100%",
-    flexBasis: 100,
+    marginTop: 0,
+    // width: "100%",
   },
   facetContainer: {
     marginBottom: 25,
-    height: 140,
   },
 });

@@ -44,13 +44,14 @@ const ProductsScreen = ({ navigation }) => {
 export default ProductsScreen;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 40,
     backgroundColor: "#fff",
     flexDirection: "row",
-    flexBasis: 100,
   },
   resultsSection: {
-    zIndex: -1,
+    // zIndex: -1,
+    marginTop: 50,
+    paddingTop: 50,
   },
 });

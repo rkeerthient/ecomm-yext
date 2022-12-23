@@ -1,10 +1,9 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, View, Dimensions } from "react-native";
+import { StyleSheet, TextInput, View, Button } from "react-native";
 import "react-native-url-polyfill/auto";
 import { useProductsContext } from "../context/ProductsContext";
 import { FacetDrawer } from "./Facets";
-const { width, height } = Dimensions.get("window");
 
 export const SearchBar = ({ verticalKey }) => {
   const [hideAutoComplete, setHideAutoComplete] = useState(false);
@@ -19,13 +18,8 @@ export const SearchBar = ({ verticalKey }) => {
       .executeVerticalQuery()
       .then((res) => setProductResults(res.verticalResults.results));
   };
-  console.log(height);
   return (
     <View>
-      <Button
-        title="Facets"
-        onPress={() => setShowFacetDrawer(!showFacetDrawer)}
-      ></Button>
       <TextInput
         style={styles.textInp}
         value={queryTerm}
@@ -34,13 +28,11 @@ export const SearchBar = ({ verticalKey }) => {
       {showFacetDrawer && (
         <View style={styles.filtersContainer}>
           <FacetDrawer
-            style={styles.facetContainer}
             filterName={"Department"}
             displayName={"Department"}
             transform={""}
           />
           <FacetDrawer
-            style={styles.facetContainer}
             filterName={"Category"}
             displayName={"Category"}
             transform={""}
@@ -61,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginHorizontal: 16,
+    zIndex: 1,
   },
   title: {
     textAlign: "center",
@@ -82,17 +75,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   filtersContainer: {
-    flexDirection: "column",
+    flexDirection: "row",
+    marginVertical: 8,
     marginHorizontal: 18,
-    minHeight: 5,
+    height: 30,
     justifyContent: "center",
-    zIndex: 1,
-    marginTop: 100,
-    height: "100%",
-    flexBasis: 100,
-  },
-  facetContainer: {
-    marginBottom: 25,
-    height: 140,
+    zIndex: 2,
   },
 });

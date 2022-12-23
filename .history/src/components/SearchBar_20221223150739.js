@@ -19,7 +19,7 @@ export const SearchBar = ({ verticalKey }) => {
       .executeVerticalQuery()
       .then((res) => setProductResults(res.verticalResults.results));
   };
-  console.log(height);
+
   return (
     <View>
       <Button
@@ -83,16 +83,11 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     flexDirection: "column",
+    marginVertical: 8,
     marginHorizontal: 18,
-    minHeight: 5,
+    height: height,
     justifyContent: "center",
-    zIndex: 1,
-    marginTop: 100,
-    height: "100%",
-    flexBasis: 100,
-  },
-  facetContainer: {
-    marginBottom: 25,
-    height: 140,
+    zIndex: 2,
+    // width: "100%",
   },
 });

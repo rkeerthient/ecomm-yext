@@ -189,7 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.offWhite,
     width: width - 40,
     alignItems: "center",
-    flexBasis: 150,
   },
   textContainer: {
     flexDirection: "row",

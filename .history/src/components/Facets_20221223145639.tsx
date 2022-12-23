@@ -35,7 +35,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
   transform,
   sort,
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [facetWasPressed, setFacetWasPressed] = useState(false);
 
   const flipAnimation = useRef(new Animated.Value(0)).current;
@@ -187,11 +187,12 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
 const styles = StyleSheet.create({
   filterContainer: {
     backgroundColor: Colors.offWhite,
-    width: width - 40,
+    width: width * 0.235,
+    marginRight: 10,
     alignItems: "center",
-    flexBasis: 150,
   },
   textContainer: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     padding: 6,
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   animatedContainer: {
     position: "absolute",
     marginTop: 31,
-    width: width - 40,
+    width: width * 0.235,
   },
   checkboxText: {
     ...Typography.bodyFont,
@@ -213,6 +214,6 @@ const styles = StyleSheet.create({
   rowStyle: {
     paddingVertical: 7.5,
     backgroundColor: Colors.offWhite,
-    height: 30,
+    height: 40,
   },
 });

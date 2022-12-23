@@ -1,10 +1,9 @@
 import { useSearchActions } from "@yext/search-headless-react";
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, View, Dimensions } from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import "react-native-url-polyfill/auto";
 import { useProductsContext } from "../context/ProductsContext";
 import { FacetDrawer } from "./Facets";
-const { width, height } = Dimensions.get("window");
 
 export const SearchBar = ({ verticalKey }) => {
   const [hideAutoComplete, setHideAutoComplete] = useState(false);
@@ -19,7 +18,7 @@ export const SearchBar = ({ verticalKey }) => {
       .executeVerticalQuery()
       .then((res) => setProductResults(res.verticalResults.results));
   };
-  console.log(height);
+
   return (
     <View>
       <Button
@@ -34,13 +33,11 @@ export const SearchBar = ({ verticalKey }) => {
       {showFacetDrawer && (
         <View style={styles.filtersContainer}>
           <FacetDrawer
-            style={styles.facetContainer}
             filterName={"Department"}
             displayName={"Department"}
             transform={""}
           />
           <FacetDrawer
-            style={styles.facetContainer}
             filterName={"Category"}
             displayName={"Category"}
             transform={""}
@@ -83,16 +80,11 @@ const styles = StyleSheet.create({
   },
   filtersContainer: {
     flexDirection: "column",
-    marginHorizontal: 18,
-    minHeight: 5,
-    justifyContent: "center",
-    zIndex: 1,
-    marginTop: 100,
-    height: "100%",
-    flexBasis: 100,
-  },
-  facetContainer: {
-    marginBottom: 25,
-    height: 140,
+    // marginVertical: 8,
+    // marginHorizontal: 18,
+    // height: 30,
+    // justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
   },
 });

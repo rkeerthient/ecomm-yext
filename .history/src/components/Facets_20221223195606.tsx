@@ -213,6 +213,6 @@ const styles = StyleSheet.create({
   rowStyle: {
     paddingVertical: 7.5,
     backgroundColor: Colors.offWhite,
-    height: 30,
+    height: 40,
   },
 });

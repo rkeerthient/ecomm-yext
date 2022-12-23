@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: 1,
     marginTop: 100,
-    height: "100%",
+    height: '100%'
     flexBasis: 100,
   },
   facetContainer: {
