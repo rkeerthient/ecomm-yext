@@ -1,5 +1,5 @@
-import { useSearchActions } from "@yext/search-headless-react";
-import React, { useState } from "react";
+import { useSearchActions, useSearchState } from "@yext/search-headless-react";
+import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, TextInput, View, Dimensions } from "react-native";
 import "react-native-url-polyfill/auto";
 import { useProductsContext } from "../context/ProductsContext";
@@ -13,7 +13,8 @@ export const SearchBar = ({ verticalKey }) => {
   const [hideAutoComplete, setHideAutoComplete] = useState(false);
   const [queryTerm, setQueryTerm] = useState("");
   const searchActions = useSearchActions();
-  const { productResults, setProductResults } = useProductsContext();
+  const { productResults, setProductResults, facets, setFacets } =
+    useProductsContext();
   const [showFacetDrawer, setShowFacetDrawer] = useState(false);
   const handleSearch = () => {
     searchActions.setQuery(queryTerm);
@@ -25,6 +26,16 @@ export const SearchBar = ({ verticalKey }) => {
   };
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
+  const facet = useSearchState((state) => state.filters.facets);
+  console.log(JSON.stringify(facet));
+
+  // useEffect(() => {
+  //   facet.length &&
+  //     facet.map((item) => setFacets([...facets], item.displayName));
+  // }, [facet]);
+  // useEffect(() => {
+  //   console.log(JSON.stringify(facets));
+  // }, [facets]);
   return (
     <View>
       <View style={{ zIndex: -1 }}>

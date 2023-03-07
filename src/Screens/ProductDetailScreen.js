@@ -84,6 +84,8 @@ const styles = StyleSheet.create({
   detailsWrapper: {
     marginTop: 10,
     paddingHorizontal: 10,
+    height: "50%",
+    backgroundColor: "white",
   },
   detailsContainer: {
     flexDirection: "row",

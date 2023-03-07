@@ -1,6 +1,6 @@
-import { useSearchActions } from "@yext/search-headless-react";
+import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useFocusEffect } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
+import { useProductsContext } from "../context/ProductsContext";
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
@@ -19,6 +20,8 @@ const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import { useIsFocused } from "@react-navigation/native";
+import VertTabs from "../components/VertTabs";
 
 const LocationsScreen = () => {
   const [results, setResults] = useState([]);
@@ -26,19 +29,36 @@ const LocationsScreen = () => {
   const [loading, setLoading] = useState(true);
   const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
+  const focus = useIsFocused(); // useIsFocused as shown
+  const { productResults, setProductResults, facets, setFacets } =
+    useProductsContext();
   useEffect(() => {
-    searchActions.setVertical("locations");
-    searchActions.executeVerticalQuery().then((res) => {
-      setResults(res.verticalResults.results),
-        setLoading(false),
-        setInitItem(res.verticalResults.results[0]);
-    });
-  }, []);
+    if (focus) {
+      setFacets([]);
+      searchActions.setVertical("locations");
+      searchActions.executeVerticalQuery().then((res) => {
+        setResults(res.verticalResults.results),
+          setLoading(false),
+          setInitItem(res.verticalResults.results[0]);
+      });
+    }
+  }, [focus]);
 
+  const facet = useSearchState((state) => state.filters.facets);
+
+  useEffect(() => {
+    facet &&
+      !facets &&
+      facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
+  }, [facet]);
+  useEffect(() => {
+    console.log(JSON.stringify(facets));
+  }, [facets]);
   return (
     <>
       {!loading && results.length >= 1 && initItem && (
         <>
+          {facets && <VertTabs facets={facets} />}
           <View style={styles.container}>
             <MapView
               ref={mapViewRef}

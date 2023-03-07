@@ -7,11 +7,14 @@ export const ProductsProvider = ({
   children,
 }: React.PropsWithChildren<unknown>) => {
   const [productResults, setProductResults] = useState([]);
+  const [facets, setFacets] = useState([]);
   return (
     <ProductsContext.Provider
       value={{
         productResults,
         setProductResults,
+        facets,
+        setFacets,
       }}
     >
       {children}

@@ -6675,6 +6675,11 @@
   dependencies:
     "glob" "^7.1.3"
 
+"rn-responsive-screen@^1.1.9":
+  "integrity" "sha512-fWANI2pBkQ+gnqx7/JD9LuNzanm8JofCiyZJmmTjYKlCYZNQkW59KYlL1AI8xMEEGwRXhZqHa4NrHlwv1knT3Q=="
+  "resolved" "https://registry.npmjs.org/rn-responsive-screen/-/rn-responsive-screen-1.1.9.tgz"
+  "version" "1.1.9"
+
 "run-parallel@^1.1.9":
   "integrity" "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="
   "resolved" "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz"

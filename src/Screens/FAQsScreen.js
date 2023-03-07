@@ -3,7 +3,6 @@ import { useRef, useState, useEffect } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { useSearchActions } from "@yext/search-headless-react";
 import { List } from "react-native-paper";
-import Markdown from "react-native-showdown";
 
 const FAQsScreen = () => {
   const [results, setResults] = useState([]);
@@ -12,9 +11,7 @@ const FAQsScreen = () => {
   useEffect(() => {
     searchActions.setVertical("faqs");
     searchActions.executeVerticalQuery().then((res) => {
-      setResults(res.verticalResults.results),
-        // setLoading(false),
-        console.log(JSON.stringify(res));
+      setResults(res.verticalResults.results);
     });
   }, []);
   const handlePress = () => setExpanded(!expanded);
@@ -29,7 +26,6 @@ const FAQsScreen = () => {
                 <List.Accordion
                   key={index}
                   title={item.rawData.question}
-                  expanded={expanded}
                   onPress={handlePress}
                 >
                   <List.Item

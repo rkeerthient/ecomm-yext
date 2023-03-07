@@ -42,7 +42,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
   const expandAnimation = useRef(new Animated.Value(0)).current;
   const { setProductResults } = useProductsContext();
 
-  const answersActions = useSearchActions();
+  const searchActions = useSearchActions();
   const searchLoading = useSearchState((state) => state.searchStatus.isLoading);
   const facet = useSearchState((state) => state.filters.facets)?.find(
     (f) => f.displayName == filterName
@@ -88,7 +88,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
 
   useEffect(() => {
     if (facetWasPressed) {
-      answersActions
+      searchActions
         .executeVerticalQuery()
         .then((res) => setProductResults(res.verticalResults.results));
       setFacetWasPressed(false);
@@ -116,7 +116,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
           checkedRowValues.includes(option) &&
           !selectedFacetOptions.includes(option)
         ) {
-          answersActions.setFacetOption(
+          searchActions.setFacetOption(
             facetFieldId,
             {
               matcher: Matcher.Equals,
@@ -128,7 +128,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
           !checkedRowValues.includes(option) &&
           selectedFacetOptions.includes(option)
         ) {
-          answersActions.setFacetOption(
+          searchActions.setFacetOption(
             facetFieldId,
             {
               matcher: Matcher.Equals,
