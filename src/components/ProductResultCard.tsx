@@ -2,7 +2,7 @@ import { Text, StyleSheet, View, Image, Button } from "react-native";
 import { widthToDp, heightToDp } from "rn-responsive-screen";
 
 const ProductResultCard = ({ data }) => {
-  // console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data));
   return (
     <>
       {data.rawData.primaryPhoto && (
@@ -21,21 +21,6 @@ const ProductResultCard = ({ data }) => {
             <Button title="BUY" />
           </View>
         </View>
-        // <View style={styles.item}>
-        //   <View style={styles.imgContainer}>
-        //     <Image
-        //       resizeMode="cover"
-        //       source={{
-        //         uri: data.rawData.primaryPhoto.image.url,
-        //       }}
-        //       style={styles.image}
-        //     ></Image>
-        //   </View>
-        //   <View style={styles.textContainer}>
-        //     <Text style={styles.title}>{data.name}</Text>
-        //     <Text style={styles.price}>${data.rawData.price.value}</Text>
-        //   </View>
-        // </View>
       )}
     </>
   );
@@ -44,34 +29,6 @@ const ProductResultCard = ({ data }) => {
 export default ProductResultCard;
 
 const styles = StyleSheet.create({
-  // item: {
-  //   marginHorizontal: 10,
-  //   marginTop: 24,
-  //   fontSize: 24,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   borderWidth: 1,
-  // },
-  // imgContainer: {
-  //   flexDirection: "row",
-  // },
-  // image: {
-  //   height: heightToDp(40),
-  //   borderRadius: 7,
-  //   marginBottom: heightToDp(2),
-  // },
-  // textContainer: {
-  //   marginTop: 20,
-  //   alignItems: "center",
-  //   flex: 1,
-  // },
-  // title: {
-  //   fontWeight: "bold",
-  // },
-  // price: {
-  //   marginTop: 5,
-  //   marginBottom: 5,
-  // },
   container: {
     shadowColor: "#000",
     borderRadius: 10,
@@ -84,7 +41,6 @@ const styles = StyleSheet.create({
     shadowRadius: 6.84,
     elevation: 5,
     padding: 10,
-    width: widthToDp(42),
     backgroundColor: "#fff",
   },
   image: {
@@ -94,14 +50,15 @@ const styles = StyleSheet.create({
     // height: "auto",
   },
   title: {
+    paddingTop: 15,
     fontSize: widthToDp(3.7),
     fontWeight: "bold",
+    minHeight: 45,
   },
   priceContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: heightToDp(3),
   },
   category: {
     fontSize: widthToDp(3.4),
@@ -111,5 +68,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: widthToDp(4),
     fontWeight: "bold",
+  }, prodImage: {
+    height: heightToDp(40),
+    borderRadius: 7,
+    marginBottom: heightToDp(2),
+    // height: "auto",
   },
 });
