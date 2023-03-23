@@ -26,6 +26,7 @@ const FAQsScreen = () => {
                 key={item.id}
                 style={{ color: "white" }}
                 title={item.rawData.question}
+                answer={item.rawData.answer}
               >
                 <Text style={styles.textSmall}>{item.rawData.answer}</Text>
               </AccordionItem>

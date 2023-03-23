@@ -1,20 +1,20 @@
 import React from "react";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Markdown from "react-native-markdown-display";
+const copy = `# h1 Heading 8-)
+ 
+**This is some bold text!**
+ 
+This is normal text
+`;
 
-type AccordionItemPros = PropsWithChildren<{
-  title: string;
-}>;
-
-const AccordionItem = ({ children, title }: AccordionItemPros): JSX.Element => {
+const AccordionItem = ({ answer, title }) => {
   const [expanded, setExpanded] = useState(false);
-
   function toggleItem() {
     setExpanded(!expanded);
   }
-
-  const body = <View style={styles.accordBody}>{children}</View>;
 
   return (
     <View style={styles.accordContainer}>
@@ -26,7 +26,11 @@ const AccordionItem = ({ children, title }: AccordionItemPros): JSX.Element => {
           color="#bbb"
         />
       </TouchableOpacity>
-      {expanded && body}
+      {expanded && (
+        <View style={styles.accordBody}>
+          <Markdown>{answer}</Markdown>
+        </View>
+      )}
     </View>
   );
 };
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
   accordBody: {
     padding: 12,
   },
+
   textSmall: {
     fontSize: 16,
   },
