@@ -2,7 +2,6 @@ import { Text, StyleSheet, View, Image, Button } from "react-native";
 import { widthToDp, heightToDp } from "rn-responsive-screen";
 
 const ProductResultCard = ({ data }) => {
-  console.log(JSON.stringify(data));
   return (
     <>
       {data.rawData.primaryPhoto && (
@@ -17,7 +16,6 @@ const ProductResultCard = ({ data }) => {
           <Text style={styles.category}>{data.rawData.category}</Text>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>${data.rawData.price.value}</Text>
-
             <Button title="BUY" />
           </View>
         </View>
@@ -68,7 +66,8 @@ const styles = StyleSheet.create({
   price: {
     fontSize: widthToDp(4),
     fontWeight: "bold",
-  }, prodImage: {
+  },
+  prodImage: {
     height: heightToDp(40),
     borderRadius: 7,
     marginBottom: heightToDp(2),

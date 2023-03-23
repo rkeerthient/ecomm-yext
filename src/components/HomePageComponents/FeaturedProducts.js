@@ -7,16 +7,23 @@ import {
   FlatList,
   Image,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { widthToDp, heightToDp } from "rn-responsive-screen";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const FeaturedProducts = () => {
+const FeaturedProducts = ({ navigation }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const pressHandler = (id) => {
+    navigation.navigate("ProductDetailScreen", { id: id });
+  };
   const Item = (item) => {
     return (
-      <Pressable style={styles.prodCard}>
+      <TouchableOpacity
+        style={styles.prodCard}
+        onPress={() => pressHandler(item.data.meta.id)}
+      >
         <View style={styles.imgContainer}>
           <Image
             source={{
@@ -24,16 +31,13 @@ const FeaturedProducts = () => {
             }}
             style={styles.prodImage}
           />
-          <Link to={`/product/${item.data.meta.id}`} style={styles.link}>
-            <FontAwesome5 name={"search"} size={24} color="black" />
-          </Link>
         </View>
 
         <View style={styles.prodTextContainer}>
           <Text style={styles.prodTitle}>{item.data.name}</Text>
           <Text style={styles.prodPrice}>${item.data.price.value}</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     );
   };
   const fetchFeaturedProducts = async () => {
@@ -84,8 +88,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     padding: 20,
-    backgroundColor: "lightgray",
-    marginTop: 20,
+    marginTop: 50,
   },
   title: {
     textTransform: "capitalize",
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#ab7a5f",
     marginTop: 10,
-    // width: "fit-content",flexBasis: auto
+    marginHorizontal: 15,
   },
   buttonText: {
     fontWeight: "400",

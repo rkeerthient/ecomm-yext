@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  Animated,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { useProductsContext } from "../context/ProductsContext";
@@ -30,6 +31,8 @@ const LocationsScreen = () => {
   const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
   const focus = useIsFocused(); // useIsFocused as shown
+  const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+
   const { productResults, setProductResults, facets, setFacets } =
     useProductsContext();
   useEffect(() => {
@@ -51,53 +54,126 @@ const LocationsScreen = () => {
       !facets &&
       facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
   }, [facet]);
-  useEffect(() => {
-    console.log(JSON.stringify(facets));
-  }, [facets]);
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(facets));
+  // }, [facets]);
   return (
     <>
       {!loading && results.length >= 1 && initItem && (
-        <>
-          {facets && <VertTabs facets={facets} />}
-          <View style={styles.container}>
-            <MapView
-              ref={mapViewRef}
-              style={styles.map}
-              initialRegion={{
-                latitude: initItem.rawData.geocodedCoordinate.latitude,
-                longitude: initItem.rawData.geocodedCoordinate.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            >
-              {results.map((data, index) => {
-                return (
-                  <Marker
-                    key={index}
-                    coordinate={{
-                      latitude: data.rawData.geocodedCoordinate.latitude,
-                      longitude: data.rawData.geocodedCoordinate.longitude,
-                    }}
-                    pinColor="#ab7a5f"
-                  >
-                    <Callout>
-                      <Text>{data.rawData.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
-              })}
-            </MapView>
-          </View>
-          <ScrollView
+        // <View style={styles.container}>
+        //   {facets && <VertTabs facets={facets} />}
+        //   <View style={styles.mapContainer}>
+        //     <MapView
+        //       ref={mapViewRef}
+        //       style={styles.map}
+        //       initialRegion={{
+        //         latitude: initItem.rawData.geocodedCoordinate.latitude,
+        //         longitude: initItem.rawData.geocodedCoordinate.longitude,
+        //         latitudeDelta: 0.0922,
+        //         longitudeDelta: 0.0421,
+        //       }}
+        //     >
+        //       {results.map((data, index) => {
+        //         return (
+        //           <Marker
+        //             key={index}
+        //             coordinate={{
+        //               latitude: data.rawData.geocodedCoordinate.latitude,
+        //               longitude: data.rawData.geocodedCoordinate.longitude,
+        //             }}
+        //             pinColor="#ab7a5f"
+        //           >
+        //             <Callout>
+        //               <Text>{data.rawData.name}</Text>
+        //             </Callout>
+        //           </Marker>
+        //         );
+        //       })}
+        //     </MapView>
+        //   </View>
+
+        //   <View style={styles.detailsContainer}>
+        //     <ScrollView
+        //       horizontal
+        //       scrollEventThrottle={1}
+        //       showsHorizontalScrollIndicator={false}
+        //       style={styles.chipsScrollView}
+        //     >
+        //       {results.map((category, index) => (
+        //         <TouchableOpacity
+        //           key={index}
+        //           style={styles.chipsItem}
+        //           onPress={() =>
+        //             mapViewRef.current.animateToRegion(
+        //               {
+        //                 latitude: category.rawData.geocodedCoordinate.latitude,
+        //                 longitude:
+        //                   category.rawData.geocodedCoordinate.longitude,
+        //               },
+        //               1000
+        //             )
+        //           }
+        //         >
+        //           <Text>{`${category.name}\n`}</Text>
+        //           <Text>{`${category.rawData.address.line1}\n`}</Text>
+        //           {category.rawData.address.line2 && (
+        //             <Text>{`${category.rawData.address.line2}\n`}</Text>
+        //           )}
+        //           <Text>
+        //             {`${category.rawData.address.city}, ${category.rawData.address.region} ${category.rawData.address.postalCode}\n`}
+        //           </Text>
+        //           <Text>{category.rawData.address.countryCode}</Text>
+        //         </TouchableOpacity>
+        //       ))}
+        //     </ScrollView>
+        //   </View>
+        // </View>
+        <View style={{ flex: 1 }}>
+          <MapView
+            ref={mapViewRef}
+            style={styles.map}
+            initialRegion={{
+              latitude: initItem.rawData.geocodedCoordinate.latitude,
+              longitude: initItem.rawData.geocodedCoordinate.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            {results.map((data, index) => {
+              return (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: data.rawData.geocodedCoordinate.latitude,
+                    longitude: data.rawData.geocodedCoordinate.longitude,
+                  }}
+                  pinColor="#ab7a5f"
+                >
+                  <Callout>
+                    <Text>{data.rawData.name}</Text>
+                  </Callout>
+                </Marker>
+              );
+            })}
+          </MapView>
+
+          <Animated.ScrollView
             horizontal
             scrollEventThrottle={1}
-            showsHorizontalScrollIndicator={false}
-            style={styles.chipsScrollView}
+            showsHorizontalScrollIndicator={true}
+            style={styles.scrollView}
+            contentInset={{
+              top: 0,
+              left: SPACING_FOR_CARD_INSET,
+              bottom: 0,
+              right: SPACING_FOR_CARD_INSET,
+            }}
           >
             {results.map((category, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.chipsItem}
+                style={styles.item}
                 onPress={() =>
                   mapViewRef.current.animateToRegion(
                     {
@@ -108,7 +184,9 @@ const LocationsScreen = () => {
                   )
                 }
               >
-                <Text>{`${category.name}\n`}</Text>
+                <Text
+                  style={{ fontWeight: "bold" }}
+                >{`${category.name}\n`}</Text>
                 <Text>{`${category.rawData.address.line1}\n`}</Text>
                 {category.rawData.address.line2 && (
                   <Text>{`${category.rawData.address.line2}\n`}</Text>
@@ -117,44 +195,28 @@ const LocationsScreen = () => {
                   {`${category.rawData.address.city}, ${category.rawData.address.region} ${category.rawData.address.postalCode}\n`}
                 </Text>
                 <Text>{category.rawData.address.countryCode}</Text>
+                <View style={styles.ctaWrapper}>
+                  <TouchableOpacity style={styles.cta}>
+                    <Text style={styles.ctaText}>Call us</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.cta}>
+                    <Text style={styles.ctaText}>Get Directions</Text>
+                  </TouchableOpacity>
+                </View>
               </TouchableOpacity>
             ))}
-          </ScrollView>
-        </>
+          </Animated.ScrollView>
+        </View>
       )}
     </>
   );
 };
 
 export default LocationsScreen;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
-  chipsScrollView: {
-    position: "absolute",
-    bottom: 10,
-    paddingHorizontal: 10,
-  },
-  chipsIcon: {
-    marginRight: 5,
-  },
-  chipsItem: {
-    backgroundColor: "#fff",
-    padding: 8,
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    height: 155,
-    shadowColor: "#ccc",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 10,
-    width: 250,
+    ...StyleSheet.absoluteFillObject,
   },
   scrollView: {
     position: "absolute",
@@ -163,64 +225,38 @@ const styles = StyleSheet.create({
     right: 0,
     paddingVertical: 10,
   },
-  endPadding: {
-    paddingRight: width - CARD_WIDTH,
-  },
-  card: {
-    elevation: 2,
-    backgroundColor: "#FFF",
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+  item: {
+    backgroundColor: "#fff",
+    padding: 8,
+    paddingHorizontal: 20,
     marginHorizontal: 10,
-    shadowColor: "#000",
+    height: 185,
+    shadowColor: "#ccc",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
     shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
-    overflow: "hidden",
+    elevation: 10,
+    width: width - 20,
   },
-  cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
+  ctaWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 15,
   },
-  textContent: {
-    flex: 2,
-    padding: 10,
+  cta: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 4,
+    backgroundColor: "#ab7a5f",
+    alignSelf: "flex-start",
+    marginHorizontal: "1%",
+    marginBottom: 6,
+    minWidth: "48%",
+    textAlign: "center",
   },
-  cardtitle: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  cardDescription: {
-    fontSize: 12,
-    color: "#444",
-  },
-  markerWrap: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 50,
-    height: 50,
-  },
-  marker: {
-    width: 30,
-    height: 30,
-  },
-  button: {
-    alignItems: "center",
-    marginTop: 5,
-  },
-  signIn: {
-    width: "100%",
-    padding: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 3,
-  },
-  textSign: {
-    fontSize: 14,
-    fontWeight: "bold",
+  ctaText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "white",
   },
 });

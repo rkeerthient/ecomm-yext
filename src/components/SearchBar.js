@@ -27,7 +27,6 @@ export const SearchBar = ({ verticalKey }) => {
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
   const facet = useSearchState((state) => state.filters.facets);
-  console.log(JSON.stringify(facet));
 
   // useEffect(() => {
   //   facet.length &&

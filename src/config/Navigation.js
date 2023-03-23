@@ -8,6 +8,7 @@ import LocationsScreen from "../Screens/LocationsScreen";
 
 import * as React from "react";
 import ProductDetailScreen from "../Screens/ProductDetailScreen";
+import { FirstScreenNavigator, SecondScreenNavigator } from "./StackScreens";
 
 const Tab = createBottomTabNavigator();
 const Navigation = () => {
@@ -28,24 +29,23 @@ const Navigation = () => {
             }
             return <FontAwesome5 name={iconName} size={24} color="black" />;
           },
+          headerShown: false,
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-
-        <Tab.Screen name="Products" component={ProductsScreen} />
         <Tab.Screen
-          name="ProductDetailScreen"
-          component={ProductDetailScreen}
-          options={() => ({
-            tabBarStyle: {
-              display: "none",
-            },
-            tabBarButton: () => null,
-          })}
+          name="Home"
+          component={FirstScreenNavigator}
+          screenOptions={{ headerShrown: false }}
         />
 
+        <Tab.Screen name="Products" component={SecondScreenNavigator} />
+
         <Tab.Screen name="FAQs" component={FAQsScreen} />
-        <Tab.Screen name="Locations" component={LocationsScreen} />
+        <Tab.Screen
+          name="Locations"
+          component={LocationsScreen}
+          options={{ headerShown: false }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

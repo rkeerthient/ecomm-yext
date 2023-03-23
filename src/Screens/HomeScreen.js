@@ -3,8 +3,9 @@ import { Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { SearchBar } from "../components/SearchBar";
 import { useState } from "react";
 import FeaturedProducts from "../components/HomePageComponents/FeaturedProducts";
+import StaticContent from "../components/HomePageComponents/StaticContent";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState("");
   return (
     <>
@@ -21,7 +22,12 @@ const HomeScreen = () => {
             <Text style={styles.buttonText}>Shop now</Text>
           </Pressable>
         </View>
-        <FeaturedProducts />
+        <View style={{ marginTop: 50 }}>
+          <FeaturedProducts navigation={navigation} />
+        </View>
+        <View style={{ marginTop: 50 }}>
+          <StaticContent></StaticContent>
+        </View>
       </ScrollView>
     </>
   );
@@ -31,9 +37,10 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
+    paddingHorizontal: 15,
     justifyContent: "start",
     alignSelf: "flex-start",
+    backgroundColor: "white",
   },
   title: {
     fontWeight: "bold",
@@ -44,11 +51,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 15,
   },
-  shopNow: {
-    color: "red",
-    borderWidth: 3,
-    borderColor: "black",
-  },
+
   button: {
     alignItems: "center",
     justifyContent: "center",
@@ -57,7 +60,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#ab7a5f",
     marginTop: 10,
-    // width: "fit-content",flexBasis: auto
   },
   buttonText: {
     fontWeight: "400",

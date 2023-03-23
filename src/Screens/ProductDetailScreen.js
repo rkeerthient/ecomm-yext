@@ -1,9 +1,18 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import { useProductsContext } from "../context/ProductsContext";
 import { useEffect, useState } from "react";
 import star from "../../assets/star";
 import { SvgXml } from "react-native-svg";
+import Icon from "react-native-vector-icons/Octicons";
 
 const ProductDetailScreen = (props) => {
   const { productResults } = useProductsContext();
@@ -36,7 +45,7 @@ const ProductDetailScreen = (props) => {
   return (
     <>
       {!isLoading && data && (
-        <View style={{ backgroundColor: "white" }}>
+        <ScrollView style={{ backgroundColor: "white" }}>
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
@@ -54,15 +63,59 @@ const ProductDetailScreen = (props) => {
               ))}
             </View>
             <View>
-              <Text>
+              <Text style={styles.prodDesc}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum,
                 animi commodi ab in cum natus, distinctio accusantium
                 praesentium deserunt dignissimos porro provident temporibus
                 exercitationem sunt eligendi consequatur eum neque quas.
               </Text>
             </View>
+
+            <View style={{ marginTop: 10, flexDirection: "column", gap: 15 }}>
+              <View
+                style={{
+                  flex: 1,
+                  height: 1,
+                  backgroundColor: "lightgray",
+                  marginVertical: 5,
+                }}
+              />
+              <Text style={styles.attibutesText}>
+                <Text style={styles.boldText}>Product Details</Text>
+              </Text>
+              <Text style={styles.attibutesText}>
+                <Text style={styles.boldText}>For:</Text>
+                <Text style={styles.attributeValue}>{data.c_department}</Text>
+              </Text>
+              <Text style={styles.attibutesText}>
+                <Text style={styles.boldText}>Type:</Text>
+                <Text style={styles.attributeValue}>
+                  {data.c_productCategory}
+                </Text>
+              </Text>
+              <Text style={styles.attibutesText}>
+                <Text style={styles.boldText}>Category:</Text>
+                <Text style={styles.attributeValue}>{data.c_cCategory}</Text>
+              </Text>
+              <View style={styles.colors}>
+                <Text style={styles.boldText}>Colors: </Text>
+                <View>
+                  {data?.c_color.map((color, index) => {
+                    return (
+                      <Pressable className="color-btn" key={index}>
+                        <Icon
+                          name="check-circle-fill"
+                          size={24}
+                          color={color.toLowerCase()}
+                        />
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       )}
     </>
   );
@@ -87,16 +140,39 @@ const styles = StyleSheet.create({
     height: "50%",
     backgroundColor: "white",
   },
+  prodDesc: {
+    fontSize: 15,
+  },
   detailsContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
   },
-  titleText: { fontSize: 20 },
+  titleText: { fontSize: 30 },
   priceText: { fontWeight: "bold", fontSize: 20 },
   rating: {
-    paddingHorizontal: 10,
     flexDirection: "row",
     paddingVertical: 8,
     marginBottom: 10,
+  },
+  attibutesText: {
+    marginVertical: 5,
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+  },
+  boldText: {
+    fontWeight: "500",
+    fontSize: 15,
+  },
+  attributeValue: {
+    fontWeight: "500",
+    fontSize: 15,
+  },
+  colors: {
+    display: "flex",
+    marginBottom: 5,
+    flexDirection: "row",
+    marginTop: 10,
+    gap: 10,
   },
 });
