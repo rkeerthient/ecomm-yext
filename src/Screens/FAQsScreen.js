@@ -1,45 +1,37 @@
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { useState, useEffect } from "react";
+import { Text, View, StyleSheet, FlatList } from "react-native";
 import { useSearchActions } from "@yext/search-headless-react";
-import { List } from "react-native-paper";
+import AccordionItem from "../components/AccordionItem";
 
 const FAQsScreen = () => {
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
-  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     searchActions.setVertical("faqs");
     searchActions.executeVerticalQuery().then((res) => {
       setResults(res.verticalResults.results);
     });
   }, []);
-  const handlePress = () => setExpanded(!expanded);
 
   return (
     <>
       {
-        <View style={{ flex: 1 }}>
-          <ScrollView>
-            {results.map((item, index) => {
-              return (
-                <List.Accordion
-                  key={index}
-                  title={item.rawData.question}
-                  onPress={handlePress}
-                >
-                  <List.Item
-                    titleNumberOfLines={25}
-                    title={
-                      <Text style={{ color: "black" }}>
-                        {item.rawData.answer}
-                      </Text>
-                    }
-                  ></List.Item>
-                </List.Accordion>
-              );
-            })}
-          </ScrollView>
+        <View style={styles.container}>
+          <FlatList
+            numColumns={1}
+            data={results}
+            renderItem={({ item }) => (
+              <AccordionItem
+                key={item.id}
+                style={{ color: "white" }}
+                title={item.rawData.question}
+              >
+                <Text style={styles.textSmall}>{item.rawData.answer}</Text>
+              </AccordionItem>
+            )}
+            keyExtractor={(item) => item.id}
+          />
         </View>
       }
     </>
@@ -47,3 +39,12 @@ const FAQsScreen = () => {
 };
 
 export default FAQsScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 0,
+    marginTop: 5,
+    justifyContent: "flex-start",
+  },
+});
