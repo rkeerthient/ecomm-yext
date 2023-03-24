@@ -8,7 +8,6 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import { useProductsContext } from "../context/ProductsContext";
 import { useEffect, useState } from "react";
 import star from "../../assets/star";
 import { SvgXml } from "react-native-svg";

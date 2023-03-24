@@ -5,13 +5,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Text,
 } from "react-native";
-import { SearchBar } from "../components/SearchBar";
-import { useProductsContext } from "../context/ProductsContext";
 import ProductResultCard from "../components/ProductResultCard";
-import { useEffect, useState, useMemo } from "react";
-import { useSearchState, useSearchActions } from "@yext/search-headless-react";
+import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setVerticalKey_disp,
+  setSearchTerm_disp,
+  setResults_disp,
+} from "../features/SearchbarSlice";
+import Loading from "../components/Loading";
 
 const ProductsScreen = ({ navigation }) => {
   const width = Dimensions.get("window").width - 40;
@@ -19,44 +24,39 @@ const ProductsScreen = ({ navigation }) => {
     navigation.navigate("ProductDetailScreen", { id: id });
   };
   const focus = useIsFocused(); // useIsFocused as shown
+  const dispatch = useDispatch();
 
-  const [results, setResults] = useState([]);
-  const searchActions = useSearchActions();
-  const [loading, setLoading] = useState(true);
-  const [initItem, setInitItem] = useState();
-  const { productResults, setProductResults, facets, setFacets } =
-    useProductsContext();
-
+  const { isLoading_disp, results } = useSelector(
+    (state) => state.searchReducer
+  );
   useEffect(() => {
     if (focus) {
-      setFacets([]);
-      searchActions.setVertical("products");
-      searchActions.executeVerticalQuery().then((res) => {
-        setResults(res.verticalResults.results),
-          setLoading(false),
-          setInitItem(res.verticalResults.results[0]);
-      });
+      dispatch(setResults_disp([]));
+      dispatch(setVerticalKey_disp("products"));
+      dispatch(setSearchTerm_disp(""));
     }
   }, [focus]);
 
-  const facet = useSearchState((state) => state.filters.facets);
+  // useEffect(() => {
+  //   facet &&
+  //     !facets &&
+  //     facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
+  // }, [facet]);
+  // useEffect(() => {
+  //   console.log(JSON.stringify(facets));
+  // }, [facets]);
 
-  useEffect(() => {
-    facet &&
-      !facets &&
-      facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
-  }, [facet]);
-  useEffect(() => {
-    console.log(JSON.stringify(facets));
-  }, [facets]);
+  // const facet = useSearchState((state) => state.filters.facets);
+
   return (
     <>
-      {!loading && (
+      {!isLoading_disp && <Loading />}
+      {isLoading_disp && (
         <View style={{ backgroundColor: "white" }}>
-          <SearchBar verticalKey="products" />
           {results && (
             <View style={styles.resultsSection}>
               <FlatList
+                onEndReached={() => loadMoreProducts()}
                 numColumns={2}
                 data={results}
                 columnWrapperStyle={{ justifyContent: "space-evenly" }}

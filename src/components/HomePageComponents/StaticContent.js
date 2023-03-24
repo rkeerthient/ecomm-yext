@@ -20,7 +20,7 @@ const StaticContent = () => {
     },
     {
       id: 2,
-      icon: <FontAwesome5 name="emoji-happy" size={24} />,
+      icon: <Entypo name="emoji-happy" size={24} />,
       title: "Premium Fabrics",
       text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates, ea. Perferendis corrupti reiciendis nesciunt rerum velit autem unde numquam nisi",
     },

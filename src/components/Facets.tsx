@@ -13,7 +13,6 @@ import SelectMultiple from "@horizonlime/react-native-select-multiple";
 import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import { Matcher } from "@yext/search-core";
 import { Colors, Typography } from "../styles";
-import { useProductsContext } from "../context/ProductsContext";
 
 const { width, height } = Dimensions.get("window");
 

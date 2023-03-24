@@ -1,22 +1,36 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
-import { useSearchActions } from "@yext/search-headless-react";
 import AccordionItem from "../components/AccordionItem";
+import { useIsFocused } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setVerticalKey_disp,
+  setSearchTerm_disp,
+  setResults_disp,
+} from "../features/SearchbarSlice";
+import Loading from "../components/Loading";
 
 const FAQsScreen = () => {
-  const [results, setResults] = useState([]);
-  const searchActions = useSearchActions();
+  const focus = useIsFocused(); // useIsFocused as shown
+  const dispatch = useDispatch();
+
+  const { isLoading_disp, results } = useSelector(
+    (state) => state.searchReducer
+  );
+
   useEffect(() => {
-    searchActions.setVertical("faqs");
-    searchActions.executeVerticalQuery().then((res) => {
-      setResults(res.verticalResults.results);
-    });
-  }, []);
+    if (focus) {
+      dispatch(setResults_disp([]));
+      dispatch(setVerticalKey_disp("faqs"));
+      dispatch(setSearchTerm_disp(""));
+    }
+  }, [focus]);
 
   return (
     <>
-      {
+      {isLoading_disp && <Loading />}
+      {!isLoading_disp && (
         <View style={styles.container}>
           <FlatList
             numColumns={1}
@@ -34,7 +48,7 @@ const FAQsScreen = () => {
             keyExtractor={(item) => item.id}
           />
         </View>
-      }
+      )}
     </>
   );
 };

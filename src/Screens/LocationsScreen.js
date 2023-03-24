@@ -1,141 +1,75 @@
-import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import * as React from "react";
-import { useRef, useState, useEffect, useFocusEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Text,
   View,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ScrollView,
   Animated,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import { useProductsContext } from "../context/ProductsContext";
-const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 220;
-const CARD_WIDTH = width * 0.8;
-const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
-const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+import {
+  setVerticalKey_disp,
+  setSearchTerm_disp,
+  setisLoading_disp,
+  setResults_disp,
+} from "../features/SearchbarSlice";
 import { useIsFocused } from "@react-navigation/native";
 import VertTabs from "../components/VertTabs";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
 
 const LocationsScreen = () => {
-  const [results, setResults] = useState([]);
-  const searchActions = useSearchActions();
-  const [loading, setLoading] = useState(true);
   const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
   const focus = useIsFocused(); // useIsFocused as shown
-  const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+  const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
 
-  const { productResults, setProductResults, facets, setFacets } =
-    useProductsContext();
+  const dispatch = useDispatch();
+  const { isLoading_disp, results } = useSelector(
+    (state) => state.searchReducer
+  );
+  // const facet = useSearchState((state) => state.filters.facets);
+
   useEffect(() => {
+    // setFacets([]);
     if (focus) {
-      setFacets([]);
-      searchActions.setVertical("locations");
-      searchActions.executeVerticalQuery().then((res) => {
-        setResults(res.verticalResults.results),
-          setLoading(false),
-          setInitItem(res.verticalResults.results[0]);
-      });
+      dispatch(setResults_disp([]));
+      dispatch(setVerticalKey_disp("locations"));
+      dispatch(setSearchTerm_disp(""));
     }
   }, [focus]);
 
-  const facet = useSearchState((state) => state.filters.facets);
+  // useEffect(() => {
+  //   if (results) {
+  //     dispatch(setisLoading_disp(true));
+  //     results.length >= 1 && setInitItem(results[0]);
+  //     dispatch(setisLoading_disp(false));
+  //   }
+  // }, [results]);
 
-  useEffect(() => {
-    facet &&
-      !facets &&
-      facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
-  }, [facet]);
+  // useEffect(() => {
+  //   facet &&
+  //     !facets &&
+  //     facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
+  // }, [facet]);
 
   // useEffect(() => {
   //   console.log(JSON.stringify(facets));
   // }, [facets]);
   return (
     <>
-      {!loading && results.length >= 1 && initItem && (
-        // <View style={styles.container}>
-        //   {facets && <VertTabs facets={facets} />}
-        //   <View style={styles.mapContainer}>
-        //     <MapView
-        //       ref={mapViewRef}
-        //       style={styles.map}
-        //       initialRegion={{
-        //         latitude: initItem.rawData.geocodedCoordinate.latitude,
-        //         longitude: initItem.rawData.geocodedCoordinate.longitude,
-        //         latitudeDelta: 0.0922,
-        //         longitudeDelta: 0.0421,
-        //       }}
-        //     >
-        //       {results.map((data, index) => {
-        //         return (
-        //           <Marker
-        //             key={index}
-        //             coordinate={{
-        //               latitude: data.rawData.geocodedCoordinate.latitude,
-        //               longitude: data.rawData.geocodedCoordinate.longitude,
-        //             }}
-        //             pinColor="#ab7a5f"
-        //           >
-        //             <Callout>
-        //               <Text>{data.rawData.name}</Text>
-        //             </Callout>
-        //           </Marker>
-        //         );
-        //       })}
-        //     </MapView>
-        //   </View>
-
-        //   <View style={styles.detailsContainer}>
-        //     <ScrollView
-        //       horizontal
-        //       scrollEventThrottle={1}
-        //       showsHorizontalScrollIndicator={false}
-        //       style={styles.chipsScrollView}
-        //     >
-        //       {results.map((category, index) => (
-        //         <TouchableOpacity
-        //           key={index}
-        //           style={styles.chipsItem}
-        //           onPress={() =>
-        //             mapViewRef.current.animateToRegion(
-        //               {
-        //                 latitude: category.rawData.geocodedCoordinate.latitude,
-        //                 longitude:
-        //                   category.rawData.geocodedCoordinate.longitude,
-        //               },
-        //               1000
-        //             )
-        //           }
-        //         >
-        //           <Text>{`${category.name}\n`}</Text>
-        //           <Text>{`${category.rawData.address.line1}\n`}</Text>
-        //           {category.rawData.address.line2 && (
-        //             <Text>{`${category.rawData.address.line2}\n`}</Text>
-        //           )}
-        //           <Text>
-        //             {`${category.rawData.address.city}, ${category.rawData.address.region} ${category.rawData.address.postalCode}\n`}
-        //           </Text>
-        //           <Text>{category.rawData.address.countryCode}</Text>
-        //         </TouchableOpacity>
-        //       ))}
-        //     </ScrollView>
-        //   </View>
-        // </View>
+      {isLoading_disp && results.length <= 0 ? (
+        <Loading />
+      ) : (
         <View style={{ flex: 1 }}>
           <MapView
             ref={mapViewRef}
             style={styles.map}
             initialRegion={{
-              latitude: initItem.rawData.geocodedCoordinate.latitude,
-              longitude: initItem.rawData.geocodedCoordinate.longitude,
+              latitude: results[0].rawData.geocodedCoordinate.latitude,
+              longitude: results[0].rawData.geocodedCoordinate.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
@@ -236,7 +170,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 10,
-    width: width - 20,
+    width: Dimensions.get("window").width - 20,
   },
   ctaWrapper: {
     flexDirection: "row",

@@ -1,12 +1,24 @@
 import * as React from "react";
 import { Text, StyleSheet, View, Pressable, ScrollView } from "react-native";
 import { SearchBar } from "../components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FeaturedProducts from "../components/HomePageComponents/FeaturedProducts";
 import StaticContent from "../components/HomePageComponents/StaticContent";
-
+import { useIsFocused } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setVerticalKey_disp,
+  setSearchTerm_disp,
+} from "../features/SearchbarSlice";
 const HomeScreen = ({ navigation }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const focus = useIsFocused();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (focus) {
+      dispatch(setVerticalKey_disp(""));
+      dispatch(setSearchTerm_disp(""));
+    }
+  }, [focus]);
   return (
     <>
       <ScrollView>

@@ -34,11 +34,16 @@ const Navigation = () => {
       >
         <Tab.Screen
           name="Home"
-          component={FirstScreenNavigator}
+          component={HomeScreen}
           screenOptions={{ headerShrown: false }}
         />
 
-        <Tab.Screen name="Products" component={SecondScreenNavigator} />
+        <Tab.Screen name="Products" component={ProductsScreen} />
+
+        <Tab.Screen
+          name="ProductDetailScreen"
+          component={ProductDetailScreen}
+        />
 
         <Tab.Screen name="FAQs" component={FAQsScreen} />
         <Tab.Screen

@@ -1,32 +1,23 @@
 import { useSearchActions, useSearchState } from "@yext/search-headless-react";
-import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, TextInput, View, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, View, Dimensions } from "react-native";
 import "react-native-url-polyfill/auto";
-import { useProductsContext } from "../context/ProductsContext";
+import { useDispatch } from "react-redux";
 import { FacetDrawer } from "./Facets";
-import { List } from "react-native-paper";
 import VertTabs from "./VertTabs";
-
-const { width, height } = Dimensions.get("window");
+import { setSearchTerm_disp } from "../features/SearchbarSlice";
 
 export const SearchBar = ({ verticalKey }) => {
-  const [hideAutoComplete, setHideAutoComplete] = useState(false);
+  const dispatch = useDispatch();
   const [queryTerm, setQueryTerm] = useState("");
-  const searchActions = useSearchActions();
-  const { productResults, setProductResults, facets, setFacets } =
-    useProductsContext();
   const [showFacetDrawer, setShowFacetDrawer] = useState(false);
-  const handleSearch = () => {
-    searchActions.setQuery(queryTerm);
-    searchActions.setVerticalLimit(100);
-    searchActions.setVertical(verticalKey);
-    searchActions
-      .executeVerticalQuery()
-      .then((res) => setProductResults(res.verticalResults.results));
-  };
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
   const facet = useSearchState((state) => state.filters.facets);
+
+  const handleSearch = (data) => {
+    dispatch(setSearchTerm_disp(data));
+  };
 
   // useEffect(() => {
   //   facet.length &&
@@ -35,18 +26,17 @@ export const SearchBar = ({ verticalKey }) => {
   // useEffect(() => {
   //   console.log(JSON.stringify(facets));
   // }, [facets]);
+
   return (
     <View>
-      <View style={{ zIndex: -1 }}>
+      <View style={{ zIndex: -1, width: 250 }}>
         <TextInput
           style={styles.textInp}
           value={queryTerm}
           onChangeText={(text) => setQueryTerm(text)}
-        />
-        <Button
-          style={{ borderWidth: 1 }}
-          title="Press me"
-          onPress={handleSearch}
+          placeholder="Search"
+          onBlur={() => handleSearch(queryTerm)}
+          enablesReturnKeyAutomatically
         />
         {showFacetDrawer && (
           <View style={styles.filtersContainer}>
@@ -54,12 +44,12 @@ export const SearchBar = ({ verticalKey }) => {
           </View>
         )}
       </View>
-      {productResults.length >= 1 && (
+      {/* {productResults.length >= 1 && (
         <Button
           title="Facets"
           onPress={() => setShowFacetDrawer(!showFacetDrawer)}
         ></Button>
-      )}
+      )} */}
     </View>
   );
 };
@@ -72,34 +62,27 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    marginVertical: 8,
   },
   fixToText: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   separator: {
-    marginVertical: 8,
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textInp: {
-    height: 40,
-    margin: 12,
+    height: 30,
+    borderRadius: 20,
     borderWidth: 1,
-    padding: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    backgroundColor: "#f2f2f3",
   },
   filtersContainer: {
     height: Dimensions.get("window").height,
-    // flex: 1,
-    // flexDirection: "column",
-    // marginHorizontal: 18,
-    // minHeight: 5,
     justifyContent: "center",
     zIndex: 2,
-    // marginTop: 100,
-    // flexBasis: 100,
-    // overflow: "auto",
   },
   facetContainer: {
     marginBottom: 25,
