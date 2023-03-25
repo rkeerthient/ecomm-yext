@@ -14,7 +14,7 @@ import { SvgXml } from "react-native-svg";
 import Icon from "react-native-vector-icons/Octicons";
 
 const ProductDetailScreen = (props) => {
-  const { productResults } = useProductsContext();
+  // const { productResults } = useProductsContext();
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const dimensions = Dimensions.get("window");

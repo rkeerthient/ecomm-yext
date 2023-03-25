@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -9,70 +9,40 @@ import {
   Animated,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import {
-  setVerticalKey_disp,
-  setSearchTerm_disp,
-  setisLoading_disp,
-  setResults_disp,
-} from "../features/SearchbarSlice";
 import { useIsFocused } from "@react-navigation/native";
-import VertTabs from "../components/VertTabs";
-import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
+import { useSearchActions } from "@yext/search-headless-react";
 
 const LocationsScreen = () => {
-  const mapViewRef = useRef(null);
   const [initItem, setInitItem] = useState();
   const focus = useIsFocused(); // useIsFocused as shown
   const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
 
-  const dispatch = useDispatch();
-  const { isLoading_disp, results } = useSelector(
-    (state) => state.searchReducer
-  );
-  // const facet = useSearchState((state) => state.filters.facets);
-
+  const [results, setResults] = useState([]);
+  const searchActions = useSearchActions();
   useEffect(() => {
-    // setFacets([]);
     if (focus) {
-      dispatch(setResults_disp([]));
-      dispatch(setVerticalKey_disp("locations"));
-      dispatch(setSearchTerm_disp(""));
+      searchActions.setVertical("locations");
+      searchActions.executeVerticalQuery().then((res) => {
+        setResults(res.verticalResults.results);
+      });
     }
   }, [focus]);
-
-  // useEffect(() => {
-  //   if (results) {
-  //     dispatch(setisLoading_disp(true));
-  //     results.length >= 1 && setInitItem(results[0]);
-  //     dispatch(setisLoading_disp(false));
-  //   }
-  // }, [results]);
-
-  // useEffect(() => {
-  //   facet &&
-  //     !facets &&
-  //     facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
-  // }, [facet]);
-
-  // useEffect(() => {
-  //   console.log(JSON.stringify(facets));
-  // }, [facets]);
   return (
     <>
-      {isLoading_disp && results.length <= 0 ? (
+      {results.length <= 0 ? (
         <Loading />
       ) : (
         <View style={{ flex: 1 }}>
           <MapView
-            ref={mapViewRef}
+            // ref={mapViewRef}
             style={styles.map}
-            initialRegion={{
-              latitude: results[0].rawData.geocodedCoordinate.latitude,
-              longitude: results[0].rawData.geocodedCoordinate.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
+            // initialRegion={{
+            //   latitude: results[0].rawData.geocodedCoordinate.latitude,
+            //   longitude: results[0].rawData.geocodedCoordinate.longitude,
+            //   latitudeDelta: 0.0922,
+            //   longitudeDelta: 0.0421,
+            // }}
           >
             {results.map((data, index) => {
               return (

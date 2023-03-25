@@ -5,53 +5,39 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Text,
 } from "react-native";
 import ProductResultCard from "../components/ProductResultCard";
 import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setVerticalKey_disp,
-  setSearchTerm_disp,
-  setResults_disp,
-} from "../features/SearchbarSlice";
+import { setInitialState } from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
+import { useSearchActions } from "@yext/search-headless-react";
+import { useState } from "react";
 
-const ProductsScreen = ({ navigation }) => {
+const ProductsScreen = ({ navigation, route }) => {
   const width = Dimensions.get("window").width - 40;
   const pressHandler = (id) => {
     navigation.navigate("ProductDetailScreen", { id: id });
   };
-  const focus = useIsFocused(); // useIsFocused as shown
   const dispatch = useDispatch();
-
-  const { isLoading_disp, results } = useSelector(
-    (state) => state.searchReducer
-  );
+  const focus = useIsFocused(); // useIsFocused as shown
+  const [results, setResults] = useState([]);
+  const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
-      dispatch(setResults_disp([]));
-      dispatch(setVerticalKey_disp("products"));
-      dispatch(setSearchTerm_disp(""));
+      searchActions.setVertical("products");
+      searchActions.executeVerticalQuery().then((res) => {
+        setResults(res.verticalResults.results);
+      });
     }
   }, [focus]);
 
-  // useEffect(() => {
-  //   facet &&
-  //     !facets &&
-  //     facet.map((item) => setFacets((facet) => [...facet, item.displayName]));
-  // }, [facet]);
-  // useEffect(() => {
-  //   console.log(JSON.stringify(facets));
-  // }, [facets]);
-
-  // const facet = useSearchState((state) => state.filters.facets);
-
   return (
     <>
-      {!isLoading_disp && <Loading />}
-      {isLoading_disp && (
+      {results.length <= 0 ? (
+        <Loading />
+      ) : (
         <View style={{ backgroundColor: "white" }}>
           {results && (
             <View style={styles.resultsSection}>

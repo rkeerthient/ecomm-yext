@@ -38,18 +38,27 @@ const Navigation = () => {
           screenOptions={{ headerShrown: false }}
         />
 
-        <Tab.Screen name="Products" component={ProductsScreen} />
+        <Tab.Screen
+          name="Products"
+          component={ProductsScreen}
+          initialParams={{ verticalKey: "products" }}
+        />
 
         <Tab.Screen
           name="ProductDetailScreen"
           component={ProductDetailScreen}
         />
 
-        <Tab.Screen name="FAQs" component={FAQsScreen} />
+        <Tab.Screen
+          name="FAQs"
+          component={FAQsScreen}
+          initialParams={{ verticalKey: "faqs" }}
+        />
         <Tab.Screen
           name="Locations"
           component={LocationsScreen}
           options={{ headerShown: false }}
+          initialParams={{ verticalKey: "locations" }}
         />
       </Tab.Navigator>
     </NavigationContainer>

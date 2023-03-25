@@ -10,7 +10,6 @@ const initialState = {
 const SearchbarSlice = createSlice({
   name: "search-bar",
   initialState,
-
   reducers: {
     setSearchTerm_disp: (state, action) => {
       state.searchTerm = action.payload;

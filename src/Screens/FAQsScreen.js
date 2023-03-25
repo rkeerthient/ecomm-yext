@@ -1,36 +1,28 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 import AccordionItem from "../components/AccordionItem";
 import { useIsFocused } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setVerticalKey_disp,
-  setSearchTerm_disp,
-  setResults_disp,
-} from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
+import { useSearchActions } from "@yext/search-headless-react";
+import { useState, useEffect } from "react";
 
 const FAQsScreen = () => {
-  const focus = useIsFocused(); // useIsFocused as shown
-  const dispatch = useDispatch();
-
-  const { isLoading_disp, results } = useSelector(
-    (state) => state.searchReducer
-  );
-
+  const focus = useIsFocused();
+  const [results, setResults] = useState([]);
+  const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
-      dispatch(setResults_disp([]));
-      dispatch(setVerticalKey_disp("faqs"));
-      dispatch(setSearchTerm_disp(""));
+      searchActions.setVertical("faqs");
+      searchActions.executeVerticalQuery().then((res) => {
+        setResults(res.verticalResults.results);
+      });
     }
   }, [focus]);
-
   return (
     <>
-      {isLoading_disp && <Loading />}
-      {!isLoading_disp && (
+      {results.length <= 0 ? (
+        <Loading />
+      ) : (
         <View style={styles.container}>
           <FlatList
             numColumns={1}

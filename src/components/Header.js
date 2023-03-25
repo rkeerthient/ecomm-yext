@@ -3,12 +3,10 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { StyleSheet, Image, View } from "react-native";
 import { SearchBar } from "./SearchBar";
 import { useState } from "react";
-
-import useSearch from "../util/useSearch";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  useSearch();
   return (
     <>
       <View style={styles.header}>

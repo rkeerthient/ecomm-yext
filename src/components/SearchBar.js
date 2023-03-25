@@ -2,7 +2,7 @@ import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View, Dimensions } from "react-native";
 import "react-native-url-polyfill/auto";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FacetDrawer } from "./Facets";
 import VertTabs from "./VertTabs";
 import { setSearchTerm_disp } from "../features/SearchbarSlice";
@@ -14,9 +14,12 @@ export const SearchBar = ({ verticalKey }) => {
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
   const facet = useSearchState((state) => state.filters.facets);
-
+  const { verticalKey_disp, searchTerm, results } = useSelector(
+    (state) => state.searchReducer
+  );
   const handleSearch = (data) => {
     dispatch(setSearchTerm_disp(data));
+    console.log(verticalKey_disp);
   };
 
   // useEffect(() => {
