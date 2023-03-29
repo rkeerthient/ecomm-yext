@@ -10,7 +10,11 @@ import ProductResultCard from "../components/ProductResultCard";
 import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { setInitialState } from "../features/SearchbarSlice";
+import {
+  setisLoading_disp,
+  setResults_disp,
+  setResetState_disp,
+} from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
 import { useSearchActions } from "@yext/search-headless-react";
 import { useState } from "react";
@@ -20,31 +24,34 @@ const ProductsScreen = ({ navigation, route }) => {
   const pressHandler = (id) => {
     navigation.navigate("ProductDetailScreen", { id: id });
   };
+  const { isLoading_disp, results_disp } = useSelector(
+    (state) => state.searchReducer
+  );
   const dispatch = useDispatch();
   const focus = useIsFocused(); // useIsFocused as shown
-  const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
+      dispatch(setResetState_disp());
       searchActions.setVertical("products");
       searchActions.executeVerticalQuery().then((res) => {
-        setResults(res.verticalResults.results);
+        res && dispatch(setResults_disp(res.verticalResults.results));
       });
     }
   }, [focus]);
 
   return (
     <>
-      {results.length <= 0 ? (
+      {isLoading_disp ? (
         <Loading />
       ) : (
         <View style={{ backgroundColor: "white" }}>
-          {results && (
+          {results_disp && (
             <View style={styles.resultsSection}>
               <FlatList
                 onEndReached={() => loadMoreProducts()}
                 numColumns={2}
-                data={results}
+                data={results_disp}
                 columnWrapperStyle={{ justifyContent: "space-evenly" }}
                 renderItem={({ item }) => (
                   <TouchableOpacity onPress={() => pressHandler(item.id)}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -12,45 +12,52 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { useIsFocused } from "@react-navigation/native";
 import Loading from "../components/Loading";
 import { useSearchActions } from "@yext/search-headless-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setResetState_disp,
+  setResults_disp,
+} from "../features/SearchbarSlice";
 
 const LocationsScreen = () => {
-  const [initItem, setInitItem] = useState();
+  const { isLoading_disp, results_disp } = useSelector(
+    (state) => state.searchReducer
+  );
+  const mapViewRef = useRef();
+  const dispatch = useDispatch();
   const focus = useIsFocused(); // useIsFocused as shown
   const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
-
-  const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
       searchActions.setVertical("locations");
       searchActions.executeVerticalQuery().then((res) => {
-        setResults(res.verticalResults.results);
+        res && dispatch(setResults_disp(res.verticalResults.results));
       });
     }
   }, [focus]);
   return (
     <>
-      {results.length <= 0 ? (
-        <Loading />
-      ) : (
+      {!isLoading_disp &&
+      results_disp.length >= 1 &&
+      results_disp[0].rawData.geocodedCoordinate?.latitude ? (
         <View style={{ flex: 1 }}>
           <MapView
-            // ref={mapViewRef}
+            ref={mapViewRef}
             style={styles.map}
-            // initialRegion={{
-            //   latitude: results[0].rawData.geocodedCoordinate.latitude,
-            //   longitude: results[0].rawData.geocodedCoordinate.longitude,
-            //   latitudeDelta: 0.0922,
-            //   longitudeDelta: 0.0421,
-            // }}
+            initialRegion={{
+              latitude: results_disp[0].rawData.geocodedCoordinate?.latitude,
+              longitude: results_disp[0].rawData.geocodedCoordinate?.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
           >
-            {results.map((data, index) => {
+            {results_disp.map((data, index) => {
               return (
                 <Marker
                   key={index}
                   coordinate={{
-                    latitude: data.rawData.geocodedCoordinate.latitude,
-                    longitude: data.rawData.geocodedCoordinate.longitude,
+                    latitude: data.rawData.geocodedCoordinate?.latitude,
+                    longitude: data.rawData.geocodedCoordinate?.longitude,
                   }}
                   pinColor="#ab7a5f"
                 >
@@ -61,7 +68,6 @@ const LocationsScreen = () => {
               );
             })}
           </MapView>
-
           <Animated.ScrollView
             horizontal
             scrollEventThrottle={1}
@@ -74,15 +80,15 @@ const LocationsScreen = () => {
               right: SPACING_FOR_CARD_INSET,
             }}
           >
-            {results.map((category, index) => (
+            {results_disp?.map((category, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.item}
                 onPress={() =>
-                  mapViewRef.current.animateToRegion(
+                  mapViewRef?.current?.animateToRegion(
                     {
-                      latitude: category.rawData.geocodedCoordinate.latitude,
-                      longitude: category.rawData.geocodedCoordinate.longitude,
+                      latitude: category.rawData.geocodedCoordinate?.latitude,
+                      longitude: category.rawData.geocodedCoordinate?.longitude,
                     },
                     1000
                   )
@@ -90,7 +96,7 @@ const LocationsScreen = () => {
               >
                 <Text
                   style={{ fontWeight: "bold" }}
-                >{`${category.name}\n`}</Text>
+                >{`${category?.name}\n`}</Text>
                 <Text>{`${category.rawData.address.line1}\n`}</Text>
                 {category.rawData.address.line2 && (
                   <Text>{`${category.rawData.address.line2}\n`}</Text>
@@ -111,6 +117,8 @@ const LocationsScreen = () => {
             ))}
           </Animated.ScrollView>
         </View>
+      ) : (
+        <Loading />
       )}
     </>
   );

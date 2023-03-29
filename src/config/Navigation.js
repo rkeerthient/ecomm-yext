@@ -9,9 +9,13 @@ import LocationsScreen from "../Screens/LocationsScreen";
 import * as React from "react";
 import ProductDetailScreen from "../Screens/ProductDetailScreen";
 import { FirstScreenNavigator, SecondScreenNavigator } from "./StackScreens";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Tab = createBottomTabNavigator();
 const Navigation = () => {
+  const { isLoading_disp } = useSelector((state) => state.searchReducer);
+
   return (
     <NavigationContainer>
       <Tab.Navigator

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  searchTerm: "",
+  searchTerm_disp: "",
   isLoading_disp: true,
   verticalKey_disp: "",
-  results: [],
+  results_disp: [],
 };
 
 const SearchbarSlice = createSlice({
@@ -17,8 +17,14 @@ const SearchbarSlice = createSlice({
     setVerticalKey_disp: (state, action) => {
       state.verticalKey_disp = action.payload;
     },
+    resetState: (state) => {
+      state = undefined;
+    },
+    setResetState_disp: (state) => {
+      state.isLoading_disp = true;
+    },
     setResults_disp: (state, action) => {
-      state.results = action.payload;
+      state.results_disp = action.payload;
       state.isLoading_disp = false;
     },
     setisLoading_disp: (state, action) => {
@@ -33,4 +39,5 @@ export const {
   setVerticalKey_disp,
   setResults_disp,
   setisLoading_disp,
+  setResetState_disp,
 } = SearchbarSlice.actions;

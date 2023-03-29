@@ -13,7 +13,6 @@ import { SafeAreaView, StyleSheet, Image, View } from "react-native";
 
 export default function App() {
   const searcher = provideHeadless(config);
-
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>

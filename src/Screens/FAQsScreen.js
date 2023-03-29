@@ -5,28 +5,37 @@ import { useIsFocused } from "@react-navigation/native";
 import Loading from "../components/Loading";
 import { useSearchActions } from "@yext/search-headless-react";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setisLoading_disp,
+  setResetState_disp,
+  setResults_disp,
+} from "../features/SearchbarSlice";
 
 const FAQsScreen = () => {
   const focus = useIsFocused();
+  const { isLoading_disp, results_disp } = useSelector(
+    (state) => state.searchReducer
+  );
+  const dispatch = useDispatch();
   const [results, setResults] = useState([]);
   const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
+      dispatch(setResetState_disp());
       searchActions.setVertical("faqs");
       searchActions.executeVerticalQuery().then((res) => {
-        setResults(res.verticalResults.results);
+        res && dispatch(setResults_disp(res.verticalResults.results));
       });
     }
   }, [focus]);
   return (
     <>
-      {results.length <= 0 ? (
-        <Loading />
-      ) : (
+      {!isLoading_disp && results_disp ? (
         <View style={styles.container}>
           <FlatList
             numColumns={1}
-            data={results}
+            data={results_disp}
             renderItem={({ item }) => (
               <AccordionItem
                 key={item.id}
@@ -40,6 +49,8 @@ const FAQsScreen = () => {
             keyExtractor={(item) => item.id}
           />
         </View>
+      ) : (
+        <Loading />
       )}
     </>
   );
