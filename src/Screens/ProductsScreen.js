@@ -7,18 +7,15 @@ import {
   Dimensions,
 } from "react-native";
 import ProductResultCard from "../components/ProductResultCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setisLoading_disp,
-  setResults_disp,
   setResetState_disp,
   setVerticalKey_disp,
+  setLoadMore_disp,
 } from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
-import { useSearchActions } from "@yext/search-headless-react";
-import { useState } from "react";
 
 const ProductsScreen = ({ navigation, route }) => {
   const { params } = route;
@@ -31,7 +28,6 @@ const ProductsScreen = ({ navigation, route }) => {
   );
   const dispatch = useDispatch();
   const focus = useIsFocused(); // useIsFocused as shown
-  const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());
@@ -39,6 +35,17 @@ const ProductsScreen = ({ navigation, route }) => {
     }
   }, [focus]);
 
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
   return (
     <>
       {isLoading_disp ? (
@@ -48,7 +55,12 @@ const ProductsScreen = ({ navigation, route }) => {
           {results_disp && (
             <View style={styles.resultsSection}>
               <FlatList
-                onEndReached={() => loadMoreProducts()}
+                onMomentumScrollEnd={({ nativeEvent }) => {
+                  if (isCloseToBottom(nativeEvent)) {
+                    dispatch(setLoadMore_disp(true));
+                  }
+                }}
+                scrollEventThrottle={400}
                 numColumns={2}
                 data={results_disp}
                 columnWrapperStyle={{ justifyContent: "space-evenly" }}

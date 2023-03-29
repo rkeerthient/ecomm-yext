@@ -11,11 +11,9 @@ import {
 import MapView, { Callout, Marker } from "react-native-maps";
 import { useIsFocused } from "@react-navigation/native";
 import Loading from "../components/Loading";
-import { useSearchActions } from "@yext/search-headless-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setResetState_disp,
-  setResults_disp,
   setVerticalKey_disp,
 } from "../features/SearchbarSlice";
 
@@ -26,9 +24,8 @@ const LocationsScreen = ({ route }) => {
   );
   const mapViewRef = useRef();
   const dispatch = useDispatch();
-  const focus = useIsFocused(); // useIsFocused as shown
+  const focus = useIsFocused();
   const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
-  const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());

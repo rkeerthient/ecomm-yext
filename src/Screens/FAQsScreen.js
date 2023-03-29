@@ -3,14 +3,12 @@ import { Text, View, StyleSheet, FlatList } from "react-native";
 import AccordionItem from "../components/AccordionItem";
 import { useIsFocused } from "@react-navigation/native";
 import Loading from "../components/Loading";
-import { useSearchActions } from "@yext/search-headless-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setisLoading_disp,
   setResetState_disp,
-  setResults_disp,
   setVerticalKey_disp,
+  setLoadMore_disp,
 } from "../features/SearchbarSlice";
 
 const FAQsScreen = ({ route }) => {
@@ -20,19 +18,34 @@ const FAQsScreen = ({ route }) => {
     (state) => state.searchReducer
   );
   const dispatch = useDispatch();
-  const [results, setResults] = useState([]);
-  const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());
       dispatch(setVerticalKey_disp(params.verticalKey));
     }
   }, [focus]);
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
   return (
     <>
       {!isLoading_disp && results_disp ? (
         <View style={styles.container}>
           <FlatList
+            onMomentumScrollEnd={({ nativeEvent }) => {
+              if (isCloseToBottom(nativeEvent)) {
+                dispatch(setLoadMore_disp(true));
+              }
+            }}
+            scrollEventThrottle={400}
             numColumns={1}
             data={results_disp}
             renderItem={({ item }) => (

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { verticalKey_disp } = useSelector((state) => state.searchReducer);
   return (
     <>
       <View style={styles.header}>
@@ -24,7 +25,7 @@ function Header() {
           {isOpen && (
             <SearchBar verticalKey="products" style={styles.searchBar} />
           )}
-          {!isOpen && (
+          {verticalKey_disp && !isOpen && (
             <EvilIcons.Button
               name={"search"}
               size={28}

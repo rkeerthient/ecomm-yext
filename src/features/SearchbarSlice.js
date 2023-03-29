@@ -5,6 +5,9 @@ const initialState = {
   isLoading_disp: true,
   verticalKey_disp: "",
   results_disp: [],
+  resultsTotal_disp: 0,
+  offset_disp: 0,
+  loadMore_disp: false,
 };
 
 const SearchbarSlice = createSlice({
@@ -17,12 +20,17 @@ const SearchbarSlice = createSlice({
     setVerticalKey_disp: (state, action) => {
       state.verticalKey_disp = action.payload;
     },
-    resetState: (state) => {
-      state = undefined;
-    },
     setResetState_disp: (state) => {
       state.searchTerm_disp = "";
       state.isLoading_disp = true;
+      state.loadMore_disp = false;
+    },
+    setLoadMore_disp: (state) => {
+      state.offset_disp = state.offset_disp + 20;
+      console.log(state.offset_disp);
+    },
+    setResultsTotal_disp: (state, action) => {
+      state.resultsTotal_disp = action.payload;
     },
     setResults_disp: (state, action) => {
       state.results_disp = action.payload;
@@ -30,7 +38,11 @@ const SearchbarSlice = createSlice({
     },
     setisLoading_disp: (state, action) => {
       state.isLoading_disp = action.payload;
+      // state.offset_disp = state.offset_disp + 20;
     },
+    // setOffset_disp: (state) => {
+    //   state.offset_disp = state.offset_disp + 20;
+    // },
   },
 });
 
@@ -41,4 +53,7 @@ export const {
   setResults_disp,
   setisLoading_disp,
   setResetState_disp,
+  setResultsTotal_disp,
+  setLoadMore_disp,
+  setOffset_disp,
 } = SearchbarSlice.actions;

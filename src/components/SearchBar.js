@@ -1,29 +1,23 @@
-import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View, Dimensions } from "react-native";
 import "react-native-url-polyfill/auto";
 import { useDispatch, useSelector } from "react-redux";
-import { FacetDrawer } from "./Facets";
 import VertTabs from "./VertTabs";
 import { setSearchTerm_disp } from "../features/SearchbarSlice";
 import { useEffect } from "react";
 
-export const SearchBar = ({ verticalKey }) => {
+export const SearchBar = () => {
   const dispatch = useDispatch();
   const [queryTerm, setQueryTerm] = useState("");
   const [showFacetDrawer, setShowFacetDrawer] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const handlePress = () => setExpanded(!expanded);
-  const facet = useSearchState((state) => state.filters.facets);
-  const { verticalKey_disp, searchTerm_disp } = useSelector(
-    (state) => state.searchReducer
-  );
+  const { searchTerm_disp } = useSelector((state) => state.searchReducer);
   const handleSearch = (data) => {
     dispatch(setSearchTerm_disp(data));
   };
   useEffect(() => {
     searchTerm_disp == "" && setQueryTerm("");
   }, [searchTerm_disp]);
+
   // useEffect(() => {
   //   facet.length &&
   //     facet.map((item) => setFacets([...facets], item.displayName));
@@ -31,7 +25,6 @@ export const SearchBar = ({ verticalKey }) => {
   // useEffect(() => {
   //   console.log(JSON.stringify(facets));
   // }, [facets]);
-
   return (
     <View>
       <View style={{ zIndex: -1, width: 250 }}>
@@ -49,12 +42,6 @@ export const SearchBar = ({ verticalKey }) => {
           </View>
         )}
       </View>
-      {/* {productResults.length >= 1 && (
-        <Button
-          title="Facets"
-          onPress={() => setShowFacetDrawer(!showFacetDrawer)}
-        ></Button>
-      )} */}
     </View>
   );
 };
