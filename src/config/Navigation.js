@@ -51,6 +51,12 @@ const Navigation = () => {
         <Tab.Screen
           name="ProductDetailScreen"
           component={ProductDetailScreen}
+          options={() => ({
+            tabBarStyle: {
+              display: "none",
+            },
+            tabBarButton: () => null,
+          })}
         />
 
         <Tab.Screen
