@@ -8,7 +8,7 @@ import ProductsScreen from "../Screens/ProductsScreen";
 
 const Stack = createNativeStackNavigator(); // creates object for Stack Navigator
 
-const FirstScreenNavigator = () => {
+const HomeScreenNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,31 +16,29 @@ const FirstScreenNavigator = () => {
         fullScreenGestureEnabled: true,
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="HomeStack" component={HomeScreen} />
       <Stack.Screen
-        name="ProductDetailScreen"
+        name="ProductDetailScreenStack"
         component={ProductDetailScreen}
       />
     </Stack.Navigator>
   );
 };
 
-export { FirstScreenNavigator }; // Stack-Navigator for Screen 1 Tab
-
-const SecondScreenNavigator = () => {
+const ProductsSreenNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Products" component={ProductsScreen} />
+      <Stack.Screen name="ProductsStack" component={ProductsScreen} />
       <Stack.Screen
-        name="ProductDetailScreen"
+        name="ProductDetailScreenStack"
         component={ProductDetailScreen}
       />
     </Stack.Navigator>
   );
 };
 
-export { SecondScreenNavigator }; // Stack-Navigator for Screen 2 Tab
+export { HomeScreenNavigator, ProductsSreenNavigator }; // Stack-Navigator for Screen 2 Tab

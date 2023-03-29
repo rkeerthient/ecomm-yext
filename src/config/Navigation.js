@@ -8,7 +8,7 @@ import LocationsScreen from "../Screens/LocationsScreen";
 
 import * as React from "react";
 import ProductDetailScreen from "../Screens/ProductDetailScreen";
-import { FirstScreenNavigator, SecondScreenNavigator } from "./StackScreens";
+import { HomeScreenNavigator, ProductsSreenNavigator } from "./StackScreens";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -38,13 +38,13 @@ const Navigation = () => {
       >
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeScreenNavigator}
           screenOptions={{ headerShrown: false }}
         />
 
         <Tab.Screen
           name="Products"
-          component={ProductsScreen}
+          component={ProductsSreenNavigator}
           initialParams={{ verticalKey: "products" }}
         />
 
