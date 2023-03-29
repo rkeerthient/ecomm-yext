@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FacetDrawer } from "./Facets";
 import VertTabs from "./VertTabs";
 import { setSearchTerm_disp } from "../features/SearchbarSlice";
+import { useEffect } from "react";
 
 export const SearchBar = ({ verticalKey }) => {
   const dispatch = useDispatch();
@@ -14,14 +15,15 @@ export const SearchBar = ({ verticalKey }) => {
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
   const facet = useSearchState((state) => state.filters.facets);
-  const { verticalKey_disp, searchTerm, results } = useSelector(
+  const { verticalKey_disp, searchTerm_disp } = useSelector(
     (state) => state.searchReducer
   );
   const handleSearch = (data) => {
     dispatch(setSearchTerm_disp(data));
-    console.log(verticalKey_disp);
   };
-
+  useEffect(() => {
+    searchTerm_disp == "" && setQueryTerm("");
+  }, [searchTerm_disp]);
   // useEffect(() => {
   //   facet.length &&
   //     facet.map((item) => setFacets([...facets], item.displayName));

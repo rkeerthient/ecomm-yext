@@ -12,7 +12,7 @@ const SearchbarSlice = createSlice({
   initialState,
   reducers: {
     setSearchTerm_disp: (state, action) => {
-      state.searchTerm = action.payload;
+      state.searchTerm_disp = action.payload;
     },
     setVerticalKey_disp: (state, action) => {
       state.verticalKey_disp = action.payload;
@@ -21,6 +21,7 @@ const SearchbarSlice = createSlice({
       state = undefined;
     },
     setResetState_disp: (state) => {
+      state.searchTerm_disp = "";
       state.isLoading_disp = true;
     },
     setResults_disp: (state, action) => {
