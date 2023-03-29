@@ -11,11 +11,11 @@ import ProductDetailScreen from "../Screens/ProductDetailScreen";
 import { HomeScreenNavigator, ProductsSreenNavigator } from "./StackScreens";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import useSearch from "../utils/useSearch";
 
 const Tab = createBottomTabNavigator();
 const Navigation = () => {
-  const { isLoading_disp } = useSelector((state) => state.searchReducer);
-
+  useSearch();
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -42,11 +42,7 @@ const Navigation = () => {
           screenOptions={{ headerShrown: false }}
         />
 
-        <Tab.Screen
-          name="Products"
-          component={ProductsSreenNavigator}
-          initialParams={{ verticalKey: "products" }}
-        />
+        <Tab.Screen name="Products" component={ProductsSreenNavigator} />
 
         <Tab.Screen
           name="ProductDetailScreen"

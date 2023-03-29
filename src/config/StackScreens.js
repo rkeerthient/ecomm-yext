@@ -32,7 +32,11 @@ const ProductsSreenNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="ProductsStack" component={ProductsScreen} />
+      <Stack.Screen
+        name="ProductsStack"
+        component={ProductsScreen}
+        initialParams={{ verticalKey: "products" }}
+      />
       <Stack.Screen
         name="ProductDetailScreenStack"
         component={ProductDetailScreen}

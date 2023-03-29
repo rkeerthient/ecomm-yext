@@ -14,12 +14,14 @@ import {
   setisLoading_disp,
   setResults_disp,
   setResetState_disp,
+  setVerticalKey_disp,
 } from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
 import { useSearchActions } from "@yext/search-headless-react";
 import { useState } from "react";
 
 const ProductsScreen = ({ navigation, route }) => {
+  const { params } = route;
   const width = Dimensions.get("window").width - 40;
   const pressHandler = (id) => {
     navigation.navigate("ProductDetailScreen", { id: id });
@@ -33,10 +35,7 @@ const ProductsScreen = ({ navigation, route }) => {
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());
-      searchActions.setVertical("products");
-      searchActions.executeVerticalQuery().then((res) => {
-        res && dispatch(setResults_disp(res.verticalResults.results));
-      });
+      dispatch(setVerticalKey_disp(params.verticalKey));
     }
   }, [focus]);
 

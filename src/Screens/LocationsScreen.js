@@ -16,9 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setResetState_disp,
   setResults_disp,
+  setVerticalKey_disp,
 } from "../features/SearchbarSlice";
 
-const LocationsScreen = () => {
+const LocationsScreen = ({ route }) => {
+  const { params } = route;
   const { isLoading_disp, results_disp } = useSelector(
     (state) => state.searchReducer
   );
@@ -29,10 +31,8 @@ const LocationsScreen = () => {
   const searchActions = useSearchActions();
   useEffect(() => {
     if (focus) {
-      searchActions.setVertical("locations");
-      searchActions.executeVerticalQuery().then((res) => {
-        res && dispatch(setResults_disp(res.verticalResults.results));
-      });
+      dispatch(setResetState_disp());
+      dispatch(setVerticalKey_disp(params.verticalKey));
     }
   }, [focus]);
   return (

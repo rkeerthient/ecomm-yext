@@ -10,9 +10,11 @@ import {
   setisLoading_disp,
   setResetState_disp,
   setResults_disp,
+  setVerticalKey_disp,
 } from "../features/SearchbarSlice";
 
-const FAQsScreen = () => {
+const FAQsScreen = ({ route }) => {
+  const { params } = route;
   const focus = useIsFocused();
   const { isLoading_disp, results_disp } = useSelector(
     (state) => state.searchReducer
@@ -23,10 +25,7 @@ const FAQsScreen = () => {
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());
-      searchActions.setVertical("faqs");
-      searchActions.executeVerticalQuery().then((res) => {
-        res && dispatch(setResults_disp(res.verticalResults.results));
-      });
+      dispatch(setVerticalKey_disp(params.verticalKey));
     }
   }, [focus]);
   return (
