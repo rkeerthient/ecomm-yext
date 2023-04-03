@@ -10,6 +10,7 @@ import {
   setVerticalKey_disp,
   setLoadMore_disp,
 } from "../features/SearchbarSlice";
+import { FlashList } from "@shopify/flash-list";
 
 const FAQsScreen = ({ route }) => {
   const { params } = route;
@@ -39,7 +40,8 @@ const FAQsScreen = ({ route }) => {
     <>
       {!isLoading_disp && results_disp ? (
         <View style={styles.container}>
-          <FlatList
+          <FlashList
+            estimatedItemSize={75}
             onMomentumScrollEnd={({ nativeEvent }) => {
               if (isCloseToBottom(nativeEvent)) {
                 dispatch(setLoadMore_disp(true));
