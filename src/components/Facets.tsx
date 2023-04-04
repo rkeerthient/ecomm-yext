@@ -2,17 +2,17 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
-  Pressable,
   StyleSheet,
   Text,
   View,
   ViewProps,
 } from "react-native";
-import Icon from "react-native-vector-icons/Octicons";
 import SelectMultiple from "@horizonlime/react-native-select-multiple";
 import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import { Matcher } from "@yext/search-core";
-import { Colors, Typography } from "../styles";
+import { Typography } from "../styles";
+import { useDispatch } from "react-redux";
+import { setResults_disp } from "../features/SearchbarSlice";
 
 const { width, height } = Dimensions.get("window");
 
@@ -39,8 +39,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
 
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const expandAnimation = useRef(new Animated.Value(0)).current;
-  const { setProductResults } = useProductsContext();
-
+  const dispatch = useDispatch();
   const searchActions = useSearchActions();
   const searchLoading = useSearchState((state) => state.searchStatus.isLoading);
   const facet = useSearchState((state) => state.filters.facets)?.find(
@@ -89,7 +88,7 @@ export const FacetDrawer: FC<IFacetDrawerProps> = ({
     if (facetWasPressed) {
       searchActions
         .executeVerticalQuery()
-        .then((res) => setProductResults(res.verticalResults.results));
+        .then((res) => dispatch(setResults_disp(res.verticalResults.results)));
       setFacetWasPressed(false);
     }
   }, [facetWasPressed]);
@@ -174,6 +173,8 @@ const styles = StyleSheet.create({
     width: width - 120,
     alignItems: "center",
     height: 150,
+    borderColor: "black",
+    borderWidth: 2,
   },
   textContainer: {
     flexDirection: "row",

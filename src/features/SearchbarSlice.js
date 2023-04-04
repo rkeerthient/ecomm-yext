@@ -8,6 +8,7 @@ const initialState = {
   resultsTotal_disp: 0,
   offset_disp: 0,
   loadMore_disp: false,
+  facets_disp: [],
 };
 
 const SearchbarSlice = createSlice({
@@ -24,10 +25,13 @@ const SearchbarSlice = createSlice({
       state.searchTerm_disp = "";
       state.isLoading_disp = true;
       state.loadMore_disp = false;
+      state.facets_disp = [];
+    },
+    setFacets_disp: (state, action) => {
+      state.facets_disp = action.payload;
     },
     setLoadMore_disp: (state) => {
       state.offset_disp = state.offset_disp + 20;
-      console.log(state.offset_disp);
     },
     setResultsTotal_disp: (state, action) => {
       state.resultsTotal_disp = action.payload;
@@ -56,4 +60,5 @@ export const {
   setResultsTotal_disp,
   setLoadMore_disp,
   setOffset_disp,
+  setFacets_disp,
 } = SearchbarSlice.actions;

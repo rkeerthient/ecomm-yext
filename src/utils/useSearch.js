@@ -1,9 +1,10 @@
-import { useSearchActions } from "@yext/search-headless-react";
+import { useSearchActions, useSearchState } from "@yext/search-headless-react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setResults_disp,
   setResultsTotal_disp,
+  setFacets_disp,
 } from "../features/SearchbarSlice";
 
 const useSearch = () => {
@@ -12,7 +13,10 @@ const useSearch = () => {
   );
   const searchActions = useSearchActions();
   const dispatch = useDispatch();
-
+  const facet = useSearchState((state) => state.filters.facets);
+  useEffect(() => {
+    facet && dispatch(setFacets_disp(facet));
+  }, [facet]);
   useEffect(() => {
     if (verticalKey_disp) {
       searchTerm_disp

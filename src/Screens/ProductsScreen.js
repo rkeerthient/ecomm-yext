@@ -16,6 +16,9 @@ import {
   setLoadMore_disp,
 } from "../features/SearchbarSlice";
 import Loading from "../components/Loading";
+import { FacetDrawer } from "../components/Facets";
+import { useSearchState } from "@yext/search-headless-react";
+import BottomContainer from "../components/BottomContainer";
 
 const ProductsScreen = ({ navigation, route }) => {
   const { params } = route;
@@ -28,6 +31,7 @@ const ProductsScreen = ({ navigation, route }) => {
   );
   const dispatch = useDispatch();
   const focus = useIsFocused(); // useIsFocused as shown
+
   useEffect(() => {
     if (focus) {
       dispatch(setResetState_disp());
@@ -46,20 +50,22 @@ const ProductsScreen = ({ navigation, route }) => {
       contentSize.height - paddingToBottom
     );
   };
+
   return (
     <>
       {isLoading_disp ? (
         <Loading />
       ) : (
-        <View style={{ backgroundColor: "white" }}>
+        <View style={styles.container}>
           {results_disp && (
-            <View style={styles.resultsSection}>
+            <>
               <FlatList
                 onMomentumScrollEnd={({ nativeEvent }) => {
                   if (isCloseToBottom(nativeEvent)) {
                     dispatch(setLoadMore_disp(true));
                   }
                 }}
+                style={{ flexBasis: 0.8 }}
                 scrollEventThrottle={400}
                 numColumns={2}
                 data={results_disp}
@@ -73,7 +79,8 @@ const ProductsScreen = ({ navigation, route }) => {
                 )}
                 keyExtractor={(item) => item.id}
               />
-            </View>
+              <BottomContainer />
+            </>
           )}
         </View>
       )}
@@ -85,12 +92,11 @@ export default ProductsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 40,
-    backgroundColor: "#fff",
-    flexDirection: "row",
-    flexBasis: 100,
+    paddingHorizontal: 0,
+    marginTop: 5,
+    justifyContent: "flex-start",
   },
-  resultsSection: {
-    zIndex: -1,
-  },
+  // resultsSection: {
+  //   zIndex: -1,
+  // },
 });
